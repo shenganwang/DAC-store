@@ -421,7 +421,8 @@ let solWeb3 = null;
 
 async function ensureSolanaLib() {
   if (solWeb3) return solWeb3;
-  if (window.solWeb3) { solWeb3 = window.solWeb3; return solWeb3; }
+  // solana/web3.js IIFE 暴露的全局变量是 solanaWeb3
+  if (window.solanaWeb3) { solWeb3 = window.solanaWeb3; return solWeb3; }
 
   // 优先加载本地库（同域名，TP钱包兼容最好）
   const CDN_LIST = [
@@ -436,8 +437,8 @@ async function ensureSolanaLib() {
         const s = document.createElement('script');
         s.src = src;
         s.onload = () => {
-          if (window.solWeb3) { solWeb3 = window.solWeb3; resolve(); }
-          else reject(new Error('solWeb3 not exposed'));
+          if (window.solanaWeb3) { solWeb3 = window.solanaWeb3; resolve(); }
+          else reject(new Error('solanaWeb3 未挂载'));
         };
         s.onerror = () => reject(new Error('failed: ' + src));
         document.head.appendChild(s);
