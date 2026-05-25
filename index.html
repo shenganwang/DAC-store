@@ -66,8 +66,10 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .product-card:hover .product-img{transform:scale(1.05)}
 .product-img-overlay{position:absolute;bottom:0;left:0;width:100%;height:60px;background:linear-gradient(transparent,var(--bg-card))}
 .product-body{padding:20px}
-.product-name{font-size:18px;font-weight:700;margin-bottom:4px}
-.product-tagline{font-size:13px;color:var(--text-muted);margin-bottom:16px}
+.product-name{font-size:18px;font-weight:700;margin-bottom:2px;line-height:1.4;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.product-name .name-text{flex:1;min-width:0}
+.product-tagline{font-size:13px;color:var(--gold-light);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);font-weight:500}
+.product-type-badge{flex-shrink:0;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;position:relative;top:2px}
 .product-price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:16px}
 .product-price{font-size:32px;font-weight:800;color:var(--gold-light)}
 .product-price-unit{font-size:14px;color:var(--text-muted)}
@@ -211,6 +213,20 @@ const storeConfig = {
     { id: "wine-vip", name: "传世窖池·窖主尊享", tagline: "窖主专属，传世珍藏", price: 1000, image: "images/img-product-02.jpg", description: "传世窖池最高等级窖主专属酒款，仅限持有尊享卡用户购买。每一滴都来自数十年老窖池，产量极低，存世稀少。购买即获得链上窖主认证NFT。", features: ["数十年老窖池原浆 · 稀缺珍品", "专属窖主认证NFT", "手工定制木盒包装", "VIP专属客服一对一服务", "全国包邮 · 保值回购承诺"], type: "physical" }
   ]
 };
+/* ────────────────────────────────────────────────────
+   📸 如何自己换图片？
+   1. 把新图片放到 dac-store/images/ 目录下
+   2. 修改上面 product 的 "image" 字段，比如：
+      "image": "images/你的新图片.jpg"
+   3. 保存后推送到GitHub/SFTP覆盖原文件即可
+   
+   📝 如何改商品信息？
+   - 价格：改 "price" 字段
+   - 名称：改 "name" 字段
+   - 描述：改 "description" 字段
+   - 卖点：改 "features" 数组
+   - 类型：digital=数字商品 physical=实物商品
+   ──────────────────────────────────────────────────── */
 
 let walletConnected = false;
 let walletPublicKey = null;
@@ -230,7 +246,7 @@ function renderProducts() {
         <div class="product-img-overlay"></div>
       </div>
       <div class="product-body">
-        <div class="product-name">${p.name}<span class="product-type-badge ${p.type||'digital'}">${p.type==='physical'?'实物':'数字'}</span></div>
+        <div class="product-name"><span class="name-text">${p.name}</span><span class="product-type-badge ${p.type||'digital'}">${p.type==='physical'?'📦 实物':'🔗 数字'}</span></div>
         <div class="product-tagline">${p.tagline}</div>
         <div class="product-price-row">
           <span class="product-price">${p.price.toLocaleString()}</span>
