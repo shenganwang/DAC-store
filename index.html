@@ -422,16 +422,33 @@ let solWeb3 = null;
 async function ensureSolanaLib() {
   if (solWeb3) return solWeb3;
   if (window.solWeb3) { solWeb3 = window.solWeb3; return solWeb3; }
-  return new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/@solana/web3.js@1.95.4/lib/index.iife.min.js';
-    s.onload = () => {
-      if (window.solWeb3) { solWeb3 = window.solWeb3; resolve(solWeb3); }
-      else reject(new Error('solWeb3 load failed'));
-    };
-    s.onerror = () => reject(new Error('solWeb3 CDN unreachable'));
-    document.head.appendChild(s);
-  });
+
+  // 优先加载本地库（同域名，TP钱包兼容最好）
+  const CDN_LIST = [
+    'lib/solana-web3.min.js',
+    'https://cdn.jsdelivr.net/npm/@solana/web3.js@1.95.4/lib/index.iife.min.js',
+    'https://unpkg.com/@solana/web3.js@1.95.4/lib/index.iife.min.js'
+  ];
+
+  for (const src of CDN_LIST) {
+    try {
+      await new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = () => {
+          if (window.solWeb3) { solWeb3 = window.solWeb3; resolve(); }
+          else reject(new Error('solWeb3 not exposed'));
+        };
+        s.onerror = () => reject(new Error('failed: ' + src));
+        document.head.appendChild(s);
+      });
+      console.log('[DAC Store] solana lib loaded from:', src);
+      return solWeb3;
+    } catch(e) {
+      console.warn('[DAC Store] CDN failed, trying next:', src, e.message);
+    }
+  }
+  throw new Error('所有CDN均加载失败，请检查网络');
 }
 
 async function buyProduct(productId) {
