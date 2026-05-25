@@ -2,9 +2,12 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>传世窖池 · DAC数字商城</title>
-<script src="lib/solana-web3.min.js"></script>
+<script src="lib/solana-web3.min.js?v=2"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -124,12 +127,23 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   .hero{padding:40px 16px 30px}
   .hero-title{font-size:26px}
   .hero-stats{gap:24px}
-  .product-grid{grid-template-columns:1fr}
+  .product-grid{grid-template-columns:1fr;gap:16px}
   .physical-header{flex-direction:column;text-align:center}
+  .product-name{font-size:16px;flex-wrap:wrap}
+  .product-name .name-text{flex:1 1 100%}
+  .product-type-badge{margin-left:0;margin-top:4px;align-self:flex-start}
+  .product-tagline{font-size:12px;margin-bottom:12px;padding-bottom:10px}
+  .product-price{font-size:26px}
+  .product-body{padding:14px}
+  .btn-buy{font-size:14px;padding:11px 20px}
+  .modal{padding:20px;max-width:95vw}
+  .modal-title{font-size:18px}
+  .modal-price{font-size:28px}
+  .payment-step{font-size:12px}
 }
 </style>
 </head>
-<body>
+<body data-version="2"><!-- v2: 缓存修复 + 手机端优化 -->
 
 <nav class="nav">
   <div class="nav-logo">
@@ -174,6 +188,24 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 <div class="status-toast" id="toast"></div>
 
 <script>
+// ── 版本检测 & 强制刷新机制 ──
+(function(){
+  var CURRENT_VERSION = '2';
+  var storedVer = localStorage.getItem('dac_store_version');
+  if (storedVer && storedVer !== CURRENT_VERSION) {
+    // 版本变更 → 清除缓存并强制刷新
+    localStorage.setItem('dac_store_version', CURRENT_VERSION);
+    // 清除可能的service worker缓存
+    if ('caches' in window) {
+      caches.keys().then(function(names){names.forEach(function(n){caches.delete(n)})});
+    }
+    location.reload(true);
+  } else {
+    localStorage.setItem('dac_store_version', CURRENT_VERSION);
+  }
+})();
+// ──────────────────────────────
+
 const TOKEN_PROGRAM_ID_STR = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
 const ASSOCIATED_TOKEN_PROGRAM_ID_STR = 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL';
 
