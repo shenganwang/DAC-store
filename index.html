@@ -171,8 +171,19 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 <div class="status-toast" id="toast"></div>
 
 <script>
-const TOKEN_PROGRAM_ID = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
-const ASSOCIATED_TOKEN_PROGRAM_ID = 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL';
+const TOKEN_PROGRAM_ID_STR = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
+const ASSOCIATED_TOKEN_PROGRAM_ID_STR = 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL';
+
+// 懒加载：solanaWeb3 载入后转换为 PublicKey 对象
+let TOKEN_PROGRAM_ID = null;
+let ASSOCIATED_TOKEN_PROGRAM_ID = null;
+
+function initProgramIds() {
+  if (!TOKEN_PROGRAM_ID && solWeb3) {
+    TOKEN_PROGRAM_ID = new solWeb3.PublicKey(TOKEN_PROGRAM_ID_STR);
+    ASSOCIATED_TOKEN_PROGRAM_ID = new solWeb3.PublicKey(ASSOCIATED_TOKEN_PROGRAM_ID_STR);
+  }
+}
 
 // 商品数据内置，不依赖fetch
 const storeConfig = {
@@ -422,7 +433,7 @@ let solWeb3 = null;
 async function ensureSolanaLib() {
   if (solWeb3) return solWeb3;
   // solana/web3.js IIFE 暴露的全局变量是 solanaWeb3
-  if (window.solanaWeb3) { solWeb3 = window.solanaWeb3; return solWeb3; }
+  if (window.solanaWeb3) { solWeb3 = window.solanaWeb3; initProgramIds(); return solWeb3; }
 
   // 优先加载本地库（同域名，TP钱包兼容最好）
   const CDN_LIST = [
@@ -437,7 +448,7 @@ async function ensureSolanaLib() {
         const s = document.createElement('script');
         s.src = src;
         s.onload = () => {
-          if (window.solanaWeb3) { solWeb3 = window.solanaWeb3; resolve(); }
+          if (window.solanaWeb3) { solWeb3 = window.solanaWeb3; initProgramIds(); resolve(); }
           else reject(new Error('solanaWeb3 未挂载'));
         };
         s.onerror = () => reject(new Error('failed: ' + src));
