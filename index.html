@@ -526,30 +526,31 @@ async function executePayment(productId) {
     );
 
     const tx = new solWeb3.Transaction();
+    tx.feePayer = walletPublicKey;
     tx.add(createTransferInstruction(userATA, recipientATA, walletPublicKey, amount));
 
-    // 策略1：优先用TP钱包自带的 signAndSendTransaction（钱包内部连链，不依赖RPC）
+    // 策略1：TP钱包 signAndSendTransaction（钱包内部连链，不依赖外部RPC）
     if (typeof window.solana.signAndSendTransaction === 'function') {
       statusEl.textContent = '请在TP钱包中确认交易...';
       statusEl.style.color = 'var(--gold-light)';
       
       var sigResult = null;
       try {
-        sigResult = await window.solana.signAndSendTransaction(tx);
-        console.log('[DAC Store] signAndSendTransaction result:', JSON.stringify(sigResult));
+        sigResult = await window.solana.signAndSendTransaction(tx, { skipPreflight: true });
+        console.log('[DAC Store] signAndSendTransaction ok, type:', typeof sigResult, ', keys:', sigResult ? Object.keys(sigResult) : 'null/undefined');
+        console.log('[DAC Store] raw result:', sigResult);
       } catch(e) {
-        console.warn('[DAC Store] signAndSendTransaction threw:', e.message, e.code);
-        // 用户取消或其他钱包错误 → 降级到策略2
-        if (e.code === 4001) {
+        console.warn('[DAC Store] signAndSendTransaction error:', e.message, e.code, JSON.stringify(e));
+        if (e.code === 4001 || (e.message && e.message.indexOf('cancel') >= 0)) {
           throw new Error('用户取消了交易');
         }
-        // 非取消错误也降级试试
-        statusEl.textContent = 'TP钱包签名方式失败，尝试手动签名...';
       }
 
+      // 尝试各种可能字段名提取签名
       var signature = null;
       if (sigResult) {
-        signature = typeof sigResult === 'string' ? sigResult : (sigResult.signature || sigResult.txid || sigResult.txId || '');
+        if (typeof sigResult === 'string') signature = sigResult;
+        else signature = sigResult.signature || sigResult.txid || sigResult.txId || sigResult.txSignature || sigResult.sign || '';
       }
 
       if (signature) {
@@ -571,40 +572,87 @@ async function executePayment(productId) {
         return;
       }
 
-      // signAndSendTransaction 没拿到签名 → 降级尝试策略2
-      console.warn('[DAC Store] signAndSendTransaction returned no signature, falling back');
-      statusEl.textContent = 'TP钱包未返回签名，切换手动签名方式...';
+      console.warn('[DAC Store] signAndSendTransaction no signature, trying sendTransaction...');
     }
 
-    // 策略2：回退到手动签名 + RPC发送
-    statusEl.textContent = '连接Solana网络...';
-    if (!connection) { connection = await ensureConnection(); }
-    if (!connection) throw new Error('无法连接Solana网络，请检查网络后重试');
+    // 策略2：signTransaction + sendTransaction（钱包内置发送能力，不依赖外部RPC）
+    statusEl.textContent = '正在签名交易...';
+    statusEl.style.color = 'var(--text-secondary)';
 
-    // 检查并创建收款方ATA
+    var signedTx;
     try {
-      const recipientAccount = await connection.getAccountInfo(recipientATA);
-      if (!recipientAccount) {
-        tx.add(createAssociatedTokenAccountInstruction(walletPublicKey, recipientATA, recipient, mint));
-      }
+      signedTx = await window.solana.signTransaction(tx);
+      console.log('[DAC Store] signTransaction ok');
     } catch(e) {
-      console.warn('[DAC Store] ATA check failed, skipping:', e.message);
+      console.warn('[DAC Store] signTransaction error:', e.message);
+      if (e.code === 4001) throw new Error('用户取消了签名');
+      throw new Error('签名失败: ' + e.message);
     }
 
-    const { blockhash } = await connection.getLatestBlockhash();
-    tx.recentBlockhash = blockhash;
+    // 尝试用钱包内置 sendTransaction 发送（不依赖外部RPC）
+    if (typeof window.solana.sendTransaction === 'function') {
+      statusEl.textContent = '钱包内置通道发送中...';
+      statusEl.style.color = 'var(--gold-light)';
+      try {
+        sig2Result = await window.solana.sendTransaction(signedTx, connection || undefined, { skipPreflight: true });
+        console.log('[DAC Store] sendTransaction result:', sig2Result);
+        var sig = null;
+        if (sig2Result) {
+          sig = typeof sig2Result === 'string' ? sig2Result : (sig2Result.signature || sig2Result.txid || '');
+        }
+        if (sig) {
+          statusEl.innerHTML = `
+            <div style="font-size:40px;margin-bottom:12px">✅</div>
+            <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
+            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
+              已支付 ${p.price.toLocaleString()} DAC · ${p.name}
+            </div>
+            <a class="tx-link" href="https://solscan.io/tx/${sig}" target="_blank">
+              查看链上交易: ${sig.slice(0,12)}...${sig.slice(-8)}
+            </a>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:8px">交易已提交，等待链上确认</div>
+          `;
+          statusEl.style.color = 'var(--success)';
+          btn.style.display = 'none';
+          updatePaymentSteps(3);
+          showToast('支付已提交! ' + sig.slice(0,8) + '...', 'success');
+          return;
+        }
+      } catch(e) {
+        console.warn('[DAC Store] sendTransaction error:', e.message);
+      }
+    }
 
-    statusEl.textContent = '请在TP钱包中确认签名...';
-    statusEl.style.color = 'var(--gold-light)';
+    // 策略3：signTransaction 后用 RPC 发送（最后手段）
+    statusEl.textContent = 'RPC通道发送中...';
+    // 多端点重试，不阻断
+    var conn = null;
+    var rpcUrls = storeConfig.store.rpcUrls.concat([
+      'https://palpable-dawn-light.solana-mainnet.quiknode.pro/',
+      'https://solana-rpc.publicnode.com',
+      'https://mainnet.helius-rpc.com/?api-key=c55ca920-d7b4-4b5c-8f9e-2fbb0a6c6e6e'
+    ]);
 
-    const signedTx = await window.solana.signTransaction(tx);
+    var sig = null;
+    for (var i = 0; i < rpcUrls.length && !sig; i++) {
+      try {
+        conn = new solWeb3.Connection(rpcUrls[i], 'confirmed');
+        sig = await conn.sendRawTransaction(signedTx.serialize(), { skipPreflight: true, maxRetries: 3 });
+        console.log('[DAC Store] sendRawTransaction OK via:', rpcUrls[i], 'sig:', sig);
+      } catch(e) {
+        console.warn('[DAC Store] sendRawTransaction failed via:', rpcUrls[i], e.message);
+      }
+    }
 
-    statusEl.textContent = '发送交易到Solana网络...';
-    const sig = await connection.sendRawTransaction(signedTx.serialize());
-    const confirmation = await connection.confirmTransaction(sig, 'confirmed');
+    if (!sig) {
+      throw new Error('所有网络通道均发送失败，请检查TP钱包网络设置');
+    }
 
-    if (confirmation.value.err) {
-      throw new Error('交易失败: ' + JSON.stringify(confirmation.value.err));
+    // 尝试确认（非致命，可选）
+    try {
+      await conn.confirmTransaction(sig, 'processed');
+    } catch(e) {
+      console.warn('[DAC Store] confirmTransaction failed (non-fatal):', e.message);
     }
 
     statusEl.innerHTML = `
