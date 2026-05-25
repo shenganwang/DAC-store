@@ -1,0 +1,45 @@
+{
+  "store": {
+    "name": "浼犱笘绐栨睜路DAC鏁板瓧鍟嗗煄",
+    "description": "娉稿窞鑰佺獤浼犱笘绐栨睜閰?路 鏁板瓧钘忓搧 & 瀹炰綋濂介厭",
+    "wallet": "Zq1pTMc7X58xaP24AmEZZf3zVszqicuCaoF3RPLebf2",
+    "tokenMint": "GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump",
+    "tokenDecimals": 6,
+    "tokenSymbol": "DAC",
+    "rpcUrl": "https://api.mainnet-beta.solana.com",
+    "physicalStoreUrl": "https://v2.sczcyn.net.cn/"
+  },
+  "products": [
+    {
+      "id": "pinjian-100",
+      "name": "浼犱笘绐栨睜路鍝侀壌鍗?,
+      "tagline": "鍏ラ棬涔嬮€夛紝鍝佸懗浼犱笘",
+      "price": 100,
+      "image": "https://placehold.co/600x400/1a0a2e/d4a843?text=鍝侀壌鍗?100DAC",
+      "description": "娉稿窞鑰佺獤浼犱笘绐栨睜閰掓暟瀛楀搧閴磋祫鏍笺€傝喘涔板悗鑾峰緱閾句笂鍝侀壌鍑瘉锛屽彲鍑鍙備笌浼犱笘绐栨睜鍝侀壌娲诲姩锛屼韩鍙椾笓灞炰紭鎯犺喘涔版潈銆?,
+      "features": [
+        "閾句笂鍝侀壌鍑瘉锛屼笉鍙鏀?,
+        "浜疄鐗╅厭涓撳睘鎶樻墸浠?,
+        "鍔犲叆浼犱笘绐栨睜鍝侀壌绀剧兢",
+        "浼樺厛鑾峰彇鏂板搧淇℃伅"
+      ],
+      "type": "digital"
+    },
+    {
+      "id": "zunxiang-500",
+      "name": "浼犱笘绐栨睜路灏婁韩鍗?,
+      "tagline": "灏婁韩鏉冪泭锛岀獤涓昏韩浠?,
+      "price": 500,
+      "image": "https://placehold.co/600x400/1a0a2e/d4a843?text=灏婁韩鍗?500DAC",
+      "description": "娉稿窞鑰佺獤浼犱笘绐栨睜閰掑皧浜暟瀛楁潈鐩婂崱銆傝喘涔板嵆鎴愪负"浼犱笘绐栨睜"鏁板瓧鑲′笢锛屼韩鏈夊疄鐗╅厭浼樺厛璐拱鏉冦€侀檺閲忕増钘忓搧绌烘姇銆佺獤姹犲弬瑙傞绾︾瓑灏婅吹鏉冪泭銆?,
+      "features": [
+        "鏁板瓧鑲′笢韬唤锛岄摼涓婅璇?,
+        "闄愰噺鐗堟暟瀛楄棌鍝佺┖鎶?,
+        "绐栨睜瀹炲湴鍙傝棰勭害鏉?,
+        "瀹炵墿閰掍紭鍏堣喘涔?& 涓撳睘鎶樻墸",
+        "浼犱笘绐栨睜绀剧兢VIP甯綅"
+      ],
+      "type": "digital"
+    }
+  ]
+}
