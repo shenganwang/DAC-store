@@ -588,7 +588,7 @@ async function executePayment(productId) {
         }
         statusEl.style.color = 'var(--success)';
         btn.style.display = 'none';
-        updatePaymentSteps(3);
+        updatePaymentSteps(4);
         showToast('支付已提交! DAC转账处理中...', 'success');
         return;
       }
@@ -636,7 +636,7 @@ async function executePayment(productId) {
           `;
           statusEl.style.color = 'var(--success)';
           btn.style.display = 'none';
-          updatePaymentSteps(3);
+          updatePaymentSteps(4);
           showToast('支付已提交! ' + sig.slice(0,8) + '...', 'success');
           return;
         }
@@ -689,7 +689,7 @@ async function executePayment(productId) {
     `;
     statusEl.style.color = 'var(--success)';
     btn.style.display = 'none';
-    updatePaymentSteps(3);
+    updatePaymentSteps(4);
     showToast('支付成功! ' + p.price.toLocaleString() + ' DAC 已到账', 'success');
 
   } catch(e) {
