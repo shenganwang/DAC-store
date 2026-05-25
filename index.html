@@ -418,14 +418,16 @@ function createAssociatedTokenAccountInstruction(payer, ata, owner, mint) {
   return new solWeb3.TransactionInstruction({
     keys,
     programId: ASSOCIATED_TOKEN_PROGRAM_ID,
-    data: Buffer.alloc(0)
+    data: new Uint8Array(0)
   });
 }
 
 function createTransferInstruction(source, destination, owner, amount) {
-  const data = Buffer.alloc(9);
-  data.writeUInt8(3, 0);
-  data.writeBigUInt64LE(BigInt(amount), 1);
+  var buf = new ArrayBuffer(9);
+  var data = new Uint8Array(buf);
+  var view = new DataView(buf);
+  data[0] = 3;
+  view.setBigUint64(1, BigInt(amount), true);
 
   const keys = [
     { pubkey: source, isSigner: false, isWritable: true },
