@@ -78,12 +78,9 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 
 .section-divider{height:1px;background:var(--border);margin:50px 0}
 
-.physical-section{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);padding:30px}
-.physical-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.physical-info h3{font-size:18px;font-weight:700;margin-bottom:4px}
-.physical-info p{font-size:13px;color:var(--text-secondary)}
-.btn-physical{padding:12px 24px;border-radius:25px;border:1px solid var(--border);background:transparent;color:var(--text-primary);font-size:14px;cursor:pointer;transition:all 0.3s;font-family:var(--font-sans);display:flex;align-items:center;gap:8px;text-decoration:none}
-.btn-physical:hover{border-color:var(--gold);color:var(--gold-light);background:rgba(212,168,67,0.05)}
+.product-type-badge{display:inline-block;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:600;margin-left:8px;vertical-align:middle}
+.product-type-badge.digital{background:rgba(168,85,247,0.15);color:var(--accent);border:1px solid rgba(168,85,247,0.3)}
+.product-type-badge.physical{background:rgba(212,168,67,0.12);color:var(--gold-light);border:1px solid rgba(212,168,67,0.3)}
 
 .footer{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:12px}
 .footer a{color:var(--gold);text-decoration:none}
@@ -145,38 +142,22 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 <section class="hero">
   <div class="hero-badge">SOLANA · DAC TOKEN</div>
   <h1 class="hero-title">泸州老窖 <span class="gradient">传世窖池</span></h1>
-  <p class="hero-desc">区块链数字权益凭证 · 用DAC代币收藏传世窖池的每一滴醇香</p>
+  <p class="hero-desc">用DAC代币直接购买泸州老窖传世窖池酒 · 链上支付 · 实物配送</p>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="hero-stat-num" id="statProducts">2</div><div class="hero-stat-label">数字藏品</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="statProducts">5</div><div class="hero-stat-label">精选商品</div></div>
     <div class="hero-stat"><div class="hero-stat-num">Solana</div><div class="hero-stat-label">公链网络</div></div>
     <div class="hero-stat"><div class="hero-stat-num">DAC</div><div class="hero-stat-label">支付代币</div></div>
   </div>
 </section>
 
 <div class="container">
-  <h2 class="section-title">数字权益 · DAC支付</h2>
-  <p class="section-sub">链上确权，传世窖池数字身份。点击卡片查看详情，选择你的窖池身份。</p>
+  <h2 class="section-title">全部商品 · DAC支付</h2>
+  <p class="section-sub">数字权益 + 实物窖藏酒，都用DAC代币直接支付。点击商品查看详情并购买。</p>
   <div class="product-grid" id="productGrid"></div>
-
-  <div class="section-divider"></div>
-
-  <div class="physical-section">
-    <div class="physical-header">
-      <div class="physical-info">
-        <h3>泸州老窖传世窖池酒 · 实物专区</h3>
-        <p>购买数字权益后，前往实体商城选购泸州老窖传世窖池酒实物</p>
-      </div>
-      <a class="btn-physical" id="btnPhysical" href="https://v2.sczcyn.net.cn/" target="_blank">
-        <span>进入实物商城</span>
-        <span style="font-size:16px">↗</span>
-      </a>
-    </div>
-  </div>
 </div>
 
 <footer class="footer">
-  <p>DAC合约：GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump · <a href="https://solscan.io/token/GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump" target="_blank">Solscan</a></p>
-  <p style="margin-top:4px">实物商城：<a href="https://v2.sczcyn.net.cn/" target="_blank">v2.sczcyn.net.cn</a></p>
+  <p>DAC合约：<a href="https://solscan.io/token/GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump" target="_blank">GgrYtje...pump</a> · 支付即确权 · 所有商品支持DAC</p>
 </footer>
 
 <div class="modal-overlay" id="detailModal">
@@ -220,7 +201,7 @@ function renderProducts() {
         <div class="product-img-overlay"></div>
       </div>
       <div class="product-body">
-        <div class="product-name">${p.name}</div>
+        <div class="product-name">${p.name}<span class="product-type-badge ${p.type||'digital'}">${p.type==='physical'?'实物':'数字'}</span></div>
         <div class="product-tagline">${p.tagline}</div>
         <div class="product-price-row">
           <span class="product-price">${p.price.toLocaleString()}</span>
@@ -251,6 +232,11 @@ function showDetail(productId) {
     <ul class="feature-list">
       ${p.features.map(f => `<li>${f}</li>`).join('')}
     </ul>
+    ${p.type==='physical' ? `
+    <div style="background:var(--bg-surface);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;font-size:13px;color:var(--text-secondary);border:1px dashed var(--border-gold)">
+      <span style="color:var(--gold-light)">📦 实物配送</span> — 支付成功后客服将联系您确认收货地址，全国包邮。
+    </div>
+    ` : ''}
     <div class="modal-price-row">
       <span class="modal-price">${p.price.toLocaleString()}</span>
       <span class="modal-price-unit">DAC</span>
