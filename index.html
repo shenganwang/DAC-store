@@ -478,10 +478,7 @@ async function buyProduct(productId) {
   try { await ensureSolanaLib(); } catch(e) {
     showToast('Solana库加载失败，请检查网络', 'error'); return;
   }
-  if (!connection) {
-    connection = await ensureConnection();
-    if (!connection) { showToast('无法连接Solana网络，请重试', 'error'); return; }
-  }
+  // 直接显示支付弹窗，RPC连接在确认支付时处理
   showPaymentModal(productId);
 }
 
@@ -515,7 +512,7 @@ async function executePayment(productId) {
       throw new Error('钱包未连接');
     }
 
-    statusEl.textContent = '步骤 1/3: 准备转账...';
+    statusEl.textContent = '正在准备转账...';
     statusEl.style.color = 'var(--text-secondary)';
 
     const mint = new solWeb3.PublicKey(storeConfig.store.tokenMint);
@@ -523,7 +520,7 @@ async function executePayment(productId) {
     const decimals = storeConfig.store.tokenDecimals || 6;
     const amount = p.price * Math.pow(10, decimals);
 
-    const userATA = await solWeb3.PublicKey.findProgramAddressSync(
+    const userATA = solWeb3.PublicKey.findProgramAddressSync(
       [walletPublicKey.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()],
       ASSOCIATED_TOKEN_PROGRAM_ID
     )[0];
@@ -533,49 +530,63 @@ async function executePayment(productId) {
       ASSOCIATED_TOKEN_PROGRAM_ID
     );
 
-    statusEl.textContent = '步骤 2/3: 构建交易并等待签名...';
-    statusEl.style.color = 'var(--gold)';
-
     const tx = new solWeb3.Transaction();
-    tx.feePayer = walletPublicKey;
+    tx.add(createTransferInstruction(userATA, recipientATA, walletPublicKey, amount));
 
-    // 尝试检查收款方ATA是否存在，网络不可达时跳过此检查
-    let recipientExists = true;
+    // 策略1：优先用TP钱包自带的 signAndSendTransaction（钱包内部连链，不依赖RPC）
+    if (typeof window.solana.signAndSendTransaction === 'function') {
+      statusEl.textContent = '请在TP钱包中确认交易...';
+      statusEl.style.color = 'var(--gold-light)';
+      
+      const result = await window.solana.signAndSendTransaction(tx);
+      const signature = typeof result === 'string' ? result : (result.signature || '');
+      
+      if (!signature) throw new Error('交易未返回签名');
+      
+      statusEl.innerHTML = `
+        <div style="font-size:40px;margin-bottom:12px">✅</div>
+        <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
+          已支付 ${p.price.toLocaleString()} DAC · ${p.name}
+        </div>
+        <a class="tx-link" href="https://solscan.io/tx/${signature}" target="_blank">
+          查看链上交易: ${signature.slice(0,12)}...${signature.slice(-8)}
+        </a>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:8px">交易已提交，等待链上确认</div>
+      `;
+      statusEl.style.color = 'var(--success)';
+      btn.style.display = 'none';
+      updatePaymentSteps(3);
+      showToast('支付已提交! ' + signature.slice(0,8) + '...', 'success');
+      return;
+    }
+
+    // 策略2：回退到手动签名 + RPC发送
+    statusEl.textContent = '连接Solana网络...';
+    if (!connection) { connection = await ensureConnection(); }
+    if (!connection) throw new Error('无法连接Solana网络，请检查网络后重试');
+
+    // 检查并创建收款方ATA
     try {
       const recipientAccount = await connection.getAccountInfo(recipientATA);
-      recipientExists = !!recipientAccount;
-    } catch(e) {
-      console.warn('[DAC Store] 无法检查收款方ATA，跳过创建:', e.message);
-      // 网络不可达时，假设ATA已存在，避免创建已存在的ATA导致交易失败
-    }
-    
-    if (!recipientExists) {
-      try {
-        tx.add(createAssociatedTokenAccountInstruction(
-          walletPublicKey,
-          recipientATA,
-          recipient,
-          mint
-        ));
-      } catch(e) {
-        console.warn('[DAC Store] 创建ATA失败(可能已存在):', e.message);
+      if (!recipientAccount) {
+        tx.add(createAssociatedTokenAccountInstruction(walletPublicKey, recipientATA, recipient, mint));
       }
+    } catch(e) {
+      console.warn('[DAC Store] ATA check failed, skipping:', e.message);
     }
-
-    tx.add(createTransferInstruction(userATA, recipientATA, walletPublicKey, amount));
 
     const { blockhash } = await connection.getLatestBlockhash();
     tx.recentBlockhash = blockhash;
 
-    statusEl.textContent = '请在TP钱包中确认交易...';
+    statusEl.textContent = '请在TP钱包中确认签名...';
     statusEl.style.color = 'var(--gold-light)';
 
     const signedTx = await window.solana.signTransaction(tx);
 
-    statusEl.textContent = '步骤 3/3: 发送交易到Solana网络...';
-    const signature = await connection.sendRawTransaction(signedTx.serialize());
-
-    const confirmation = await connection.confirmTransaction(signature, 'confirmed');
+    statusEl.textContent = '发送交易到Solana网络...';
+    const sig = await connection.sendRawTransaction(signedTx.serialize());
+    const confirmation = await connection.confirmTransaction(sig, 'confirmed');
 
     if (confirmation.value.err) {
       throw new Error('交易失败: ' + JSON.stringify(confirmation.value.err));
@@ -587,15 +598,13 @@ async function executePayment(productId) {
       <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
         已支付 ${p.price.toLocaleString()} DAC · ${p.name}
       </div>
-      <a class="tx-link" href="https://solscan.io/tx/${signature}" target="_blank">
-        查看链上交易: ${signature.slice(0,12)}...${signature.slice(-8)}
+      <a class="tx-link" href="https://solscan.io/tx/${sig}" target="_blank">
+        查看链上交易: ${sig.slice(0,12)}...${sig.slice(-8)}
       </a>
     `;
     statusEl.style.color = 'var(--success)';
     btn.style.display = 'none';
-
     updatePaymentSteps(3);
-
     showToast('支付成功! ' + p.price.toLocaleString() + ' DAC 已到账', 'success');
 
   } catch(e) {
