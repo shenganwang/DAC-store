@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>浼犱笘绐栨睜 路 DAC鏁板瓧鍟嗗煄</title>
+<title>传世窖池 · DAC数字商城</title>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -59,7 +59,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .product-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all 0.3s;cursor:pointer;position:relative}
 .product-card:hover{transform:translateY(-4px);border-color:var(--border-gold);box-shadow:0 12px 40px rgba(168,85,247,0.1)}
 .product-card.featured{border-color:var(--border-gold)}
-.product-card.featured::before{content:'鐑棬';position:absolute;top:16px;right:16px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;font-size:11px;padding:4px 12px;border-radius:12px;z-index:2}
+.product-card.featured::before{content:'热门';position:absolute;top:16px;right:16px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;font-size:11px;padding:4px 12px;border-radius:12px;z-index:2}
 .product-img-wrap{position:relative;width:100%;height:220px;overflow:hidden}
 .product-img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
 .product-card:hover .product-img{transform:scale(1.05)}
@@ -134,28 +134,28 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 <nav class="nav">
   <div class="nav-logo">
     <div class="nav-logo-icon">D</div>
-    <span class="nav-logo-text">DAC鏁板瓧鍟嗗煄</span>
+    <span class="nav-logo-text">DAC数字商城</span>
   </div>
   <button class="btn-wallet" id="btnWallet" onclick="connectWallet()">
     <span class="dot"></span>
-    <span id="walletStatus">杩炴帴閽卞寘</span>
+    <span id="walletStatus">连接钱包</span>
   </button>
 </nav>
 
 <section class="hero">
-  <div class="hero-badge">SOLANA 路 DAC TOKEN</div>
-  <h1 class="hero-title">娉稿窞鑰佺獤 <span class="gradient">浼犱笘绐栨睜</span></h1>
-  <p class="hero-desc">鍖哄潡閾炬暟瀛楁潈鐩婂嚟璇?路 鐢―AC浠ｅ竵鏀惰棌浼犱笘绐栨睜鐨勬瘡涓€婊撮唶棣?/p>
+  <div class="hero-badge">SOLANA · DAC TOKEN</div>
+  <h1 class="hero-title">泸州老窖 <span class="gradient">传世窖池</span></h1>
+  <p class="hero-desc">区块链数字权益凭证 · 用DAC代币收藏传世窖池的每一滴醇香</p>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="hero-stat-num" id="statProducts">2</div><div class="hero-stat-label">鏁板瓧钘忓搧</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">Solana</div><div class="hero-stat-label">鍏摼缃戠粶</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">DAC</div><div class="hero-stat-label">鏀粯浠ｅ竵</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="statProducts">2</div><div class="hero-stat-label">数字藏品</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">Solana</div><div class="hero-stat-label">公链网络</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">DAC</div><div class="hero-stat-label">支付代币</div></div>
   </div>
 </section>
 
 <div class="container">
-  <h2 class="section-title">鏁板瓧鏉冪泭 路 DAC鏀粯</h2>
-  <p class="section-sub">閾句笂纭潈锛屼紶涓栫獤姹犳暟瀛楄韩浠姐€傜偣鍑诲崱鐗囨煡鐪嬭鎯咃紝閫夋嫨浣犵殑绐栨睜韬唤銆?/p>
+  <h2 class="section-title">数字权益 · DAC支付</h2>
+  <p class="section-sub">链上确权，传世窖池数字身份。点击卡片查看详情，选择你的窖池身份。</p>
   <div class="product-grid" id="productGrid"></div>
 
   <div class="section-divider"></div>
@@ -163,20 +163,20 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   <div class="physical-section">
     <div class="physical-header">
       <div class="physical-info">
-        <h3>娉稿窞鑰佺獤浼犱笘绐栨睜閰?路 瀹炵墿涓撳尯</h3>
-        <p>璐拱鏁板瓧鏉冪泭鍚庯紝鍓嶅線瀹炰綋鍟嗗煄閫夎喘娉稿窞鑰佺獤浼犱笘绐栨睜閰掑疄鐗?/p>
+        <h3>泸州老窖传世窖池酒 · 实物专区</h3>
+        <p>购买数字权益后，前往实体商城选购泸州老窖传世窖池酒实物</p>
       </div>
       <a class="btn-physical" id="btnPhysical" href="https://v2.sczcyn.net.cn/" target="_blank">
-        <span>杩涘叆瀹炵墿鍟嗗煄</span>
-        <span style="font-size:16px">鈫?/span>
+        <span>进入实物商城</span>
+        <span style="font-size:16px">↗</span>
       </a>
     </div>
   </div>
 </div>
 
 <footer class="footer">
-  <p>DAC鍚堢害锛欸grYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump 路 <a href="https://solscan.io/token/GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump" target="_blank">Solscan</a></p>
-  <p style="margin-top:4px">瀹炵墿鍟嗗煄锛?a href="https://v2.sczcyn.net.cn/" target="_blank">v2.sczcyn.net.cn</a></p>
+  <p>DAC合约：GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump · <a href="https://solscan.io/token/GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump" target="_blank">Solscan</a></p>
+  <p style="margin-top:4px">实物商城：<a href="https://v2.sczcyn.net.cn/" target="_blank">v2.sczcyn.net.cn</a></p>
 </footer>
 
 <div class="modal-overlay" id="detailModal">
@@ -207,7 +207,7 @@ async function loadConfig() {
     renderProducts();
   } catch(e) {
     console.error('Failed to load config:', e);
-    showToast('鍟嗗搧閰嶇疆鍔犺浇澶辫触锛岃鍒锋柊閲嶈瘯', 'error');
+    showToast('商品配置加载失败，请刷新重试', 'error');
   }
 }
 
@@ -227,7 +227,7 @@ function renderProducts() {
           <span class="product-price-unit">DAC</span>
         </div>
         <button class="btn-buy ${i===1?'gold':''}" onclick="event.stopPropagation();buyProduct('${p.id}')">
-          <span>鈿?/span> DAC鏀粯璐拱
+          <span>⚡</span> DAC支付购买
         </button>
       </div>
     </div>
@@ -243,7 +243,7 @@ function showDetail(productId) {
   const p = findProduct(productId);
   if (!p) return;
   document.getElementById('detailContent').innerHTML = `
-    <button class="modal-close" onclick="closeModal('detailModal')">鉁?/button>
+    <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
     <img class="modal-img" src="${p.image}" alt="${p.name}" onerror="this.src='https://placehold.co/600x400/1a0a2e/d4a843?text=${encodeURIComponent(p.name)}'">
     <h2 class="modal-title">${p.name}</h2>
     <p class="modal-tagline">${p.tagline}</p>
@@ -256,7 +256,7 @@ function showDetail(productId) {
       <span class="modal-price-unit">DAC</span>
     </div>
     <button class="btn-buy ${p.price===500?'gold':''}" onclick="closeModal('detailModal');buyProduct('${p.id}')">
-      <span>鈿?/span> DAC鏀粯璐拱
+      <span>⚡</span> DAC支付购买
     </button>
   `;
   document.getElementById('detailModal').classList.add('active');
@@ -267,40 +267,40 @@ function showPaymentModal(productId) {
   if (!p) return;
   const shortAddr = walletPublicKey ? walletPublicKey.toString().slice(0,4)+'...'+walletPublicKey.toString().slice(-4) : '';
   document.getElementById('paymentContent').innerHTML = `
-    <button class="modal-close" onclick="closeModal('paymentModal')">鉁?/button>
-    <h2 class="modal-title" style="font-size:18px">纭鏀粯</h2>
-    <p class="modal-tagline">${p.name} 路 ${p.price.toLocaleString()} DAC</p>
+    <button class="modal-close" onclick="closeModal('paymentModal')">✕</button>
+    <h2 class="modal-title" style="font-size:18px">确认支付</h2>
+    <p class="modal-tagline">${p.name} · ${p.price.toLocaleString()} DAC</p>
     <div class="payment-steps">
       <div class="payment-step active">
         <div class="step-dot">1</div>
-        <span>鏀粯 ${p.price.toLocaleString()} DAC 鍒板晢瀹堕挶鍖?/span>
+        <span>支付 ${p.price.toLocaleString()} DAC 到商家钱包</span>
       </div>
       <div class="payment-step">
         <div class="step-dot">2</div>
-        <span>绛夊緟閾句笂纭</span>
+        <span>等待链上确认</span>
       </div>
       <div class="payment-step">
         <div class="step-dot">3</div>
-        <span>鏀粯鎴愬姛锛岃幏寰?{p.name}鏉冪泭</span>
+        <span>支付成功，获得${p.name}权益</span>
       </div>
     </div>
     <div style="background:var(--bg-surface);border-radius:var(--radius-sm);padding:16px;margin:16px 0;font-size:13px;color:var(--text-secondary)">
       <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <span>鏀粯鏂?/span><span style="color:var(--text-primary)">${shortAddr || '鏈繛鎺?}</span>
+        <span>支付方</span><span style="color:var(--text-primary)">${shortAddr || '未连接'}</span>
       </div>
       <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <span>鏀舵鏂?/span><span style="color:var(--text-primary)">${storeConfig.store.wallet.slice(0,4)}...${storeConfig.store.wallet.slice(-4)}</span>
+        <span>收款方</span><span style="color:var(--text-primary)">${storeConfig.store.wallet.slice(0,4)}...${storeConfig.store.wallet.slice(-4)}</span>
       </div>
       <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <span>浠ｅ竵</span><span style="color:var(--text-primary)">DAC</span>
+        <span>代币</span><span style="color:var(--text-primary)">DAC</span>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700">
-        <span>閲戦</span><span style="color:var(--gold-light)">${p.price.toLocaleString()} DAC</span>
+        <span>金额</span><span style="color:var(--gold-light)">${p.price.toLocaleString()} DAC</span>
       </div>
     </div>
     <div id="paymentStatus" style="text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:16px"></div>
     <button class="btn-buy gold" id="btnConfirmPay" onclick="executePayment('${p.id}')">
-      <span>馃攼</span> 纭骞舵敮浠?${p.price.toLocaleString()} DAC
+      <span>🔐</span> 确认并支付 ${p.price.toLocaleString()} DAC
     </button>
   `;
   document.getElementById('paymentModal').classList.add('active');
@@ -328,7 +328,7 @@ function showToast(msg, type) {
 async function connectWallet() {
   try {
     if (!window.solana) {
-      showToast('鏈娴嬪埌TP閽卞寘銆傝鍦═P閽卞寘娴忚鍣ㄤ腑鎵撳紑姝ら〉闈€?, 'error');
+      showToast('未检测到TP钱包。请在TP钱包浏览器中打开此页面。', 'error');
       return;
     }
     if (!window.solana.isPhantom && !window.solana.isConnected) {
@@ -337,13 +337,13 @@ async function connectWallet() {
     walletPublicKey = resp.publicKey;
     walletConnected = true;
     updateWalletUI();
-    showToast('閽卞寘宸茶繛鎺? ' + walletPublicKey.toString().slice(0,6) + '...' + walletPublicKey.toString().slice(-4), 'success');
+    showToast('钱包已连接: ' + walletPublicKey.toString().slice(0,6) + '...' + walletPublicKey.toString().slice(-4), 'success');
   } catch(e) {
     console.error('Wallet connect failed:', e);
     if (e.code === 4001) {
-      showToast('鐢ㄦ埛鍙栨秷浜嗚繛鎺?, 'info');
+      showToast('用户取消了连接', 'info');
     } else {
-      showToast('閽卞寘杩炴帴澶辫触锛岃纭繚浣跨敤TP閽卞寘娴忚鍣ㄦ墦寮€', 'error');
+      showToast('钱包连接失败，请确保使用TP钱包浏览器打开', 'error');
     }
   }
 }
@@ -356,7 +356,7 @@ function updateWalletUI() {
     status.textContent = walletPublicKey.toString().slice(0,4) + '...' + walletPublicKey.toString().slice(-4);
   } else {
     btn.classList.remove('connected');
-    status.textContent = '杩炴帴閽卞寘';
+    status.textContent = '连接钱包';
   }
 }
 
@@ -422,7 +422,7 @@ function createTransferInstruction(source, destination, owner, amount) {
 
 async function buyProduct(productId) {
   if (!walletConnected || !walletPublicKey) {
-    showToast('璇峰厛杩炴帴TP閽卞寘', 'info');
+    showToast('请先连接TP钱包', 'info');
     await connectWallet();
     if (!walletConnected) return;
   }
@@ -436,14 +436,14 @@ async function executePayment(productId) {
   const btn = document.getElementById('btnConfirmPay');
   const statusEl = document.getElementById('paymentStatus');
   btn.disabled = true;
-  btn.innerHTML = '<span style="animation:spin 1s linear infinite">鉄?/span> 澶勭悊涓?..';
+  btn.innerHTML = '<span style="animation:spin 1s linear infinite">⟳</span> 处理中...';
 
   try {
     if (!window.solana || !window.solana.isConnected) {
-      throw new Error('閽卞寘鏈繛鎺?);
+      throw new Error('钱包未连接');
     }
 
-    statusEl.textContent = '姝ラ 1/3: 鍑嗗杞处...';
+    statusEl.textContent = '步骤 1/3: 准备转账...';
     statusEl.style.color = 'var(--text-secondary)';
 
     const mint = new solanaWeb3.PublicKey(storeConfig.store.tokenMint);
@@ -461,7 +461,7 @@ async function executePayment(productId) {
       ASSOCIATED_TOKEN_PROGRAM_ID
     );
 
-    statusEl.textContent = '姝ラ 2/3: 鏋勫缓浜ゆ槗骞剁瓑寰呯鍚?..';
+    statusEl.textContent = '步骤 2/3: 构建交易并等待签名...';
     statusEl.style.color = 'var(--gold)';
 
     const tx = new solanaWeb3.Transaction();
@@ -482,28 +482,28 @@ async function executePayment(productId) {
     const { blockhash } = await connection.getLatestBlockhash();
     tx.recentBlockhash = blockhash;
 
-    statusEl.textContent = '璇峰湪TP閽卞寘涓‘璁や氦鏄?..';
+    statusEl.textContent = '请在TP钱包中确认交易...';
     statusEl.style.color = 'var(--gold-light)';
 
     const signedTx = await window.solana.signTransaction(tx);
 
-    statusEl.textContent = '姝ラ 3/3: 鍙戦€佷氦鏄撳埌Solana缃戠粶...';
+    statusEl.textContent = '步骤 3/3: 发送交易到Solana网络...';
     const signature = await connection.sendRawTransaction(signedTx.serialize());
 
     const confirmation = await connection.confirmTransaction(signature, 'confirmed');
 
     if (confirmation.value.err) {
-      throw new Error('浜ゆ槗澶辫触: ' + JSON.stringify(confirmation.value.err));
+      throw new Error('交易失败: ' + JSON.stringify(confirmation.value.err));
     }
 
     statusEl.innerHTML = `
-      <div style="font-size:40px;margin-bottom:12px">鉁?/div>
-      <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">鏀粯鎴愬姛!</div>
+      <div style="font-size:40px;margin-bottom:12px">✅</div>
+      <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付成功!</div>
       <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-        宸叉敮浠?${p.price.toLocaleString()} DAC 路 ${p.name}
+        已支付 ${p.price.toLocaleString()} DAC · ${p.name}
       </div>
       <a class="tx-link" href="https://solscan.io/tx/${signature}" target="_blank">
-        鏌ョ湅閾句笂浜ゆ槗: ${signature.slice(0,12)}...${signature.slice(-8)}
+        查看链上交易: ${signature.slice(0,12)}...${signature.slice(-8)}
       </a>
     `;
     statusEl.style.color = 'var(--success)';
@@ -511,15 +511,15 @@ async function executePayment(productId) {
 
     updatePaymentSteps(3);
 
-    showToast('鏀粯鎴愬姛! ' + p.price.toLocaleString() + ' DAC 宸插埌璐?, 'success');
+    showToast('支付成功! ' + p.price.toLocaleString() + ' DAC 已到账', 'success');
 
   } catch(e) {
     console.error('Payment failed:', e);
-    statusEl.textContent = '鏀粯澶辫触: ' + (e.message || '璇烽噸璇?);
+    statusEl.textContent = '支付失败: ' + (e.message || '请重试');
     statusEl.style.color = 'var(--danger)';
     btn.disabled = false;
-    btn.innerHTML = '<span>馃攼</span> 閲嶈瘯鏀粯';
-    showToast('鏀粯澶辫触: ' + (e.message || '鏈煡閿欒'), 'error');
+    btn.innerHTML = '<span>🔐</span> 重试支付';
+    showToast('支付失败: ' + (e.message || '未知错误'), 'error');
   }
 }
 
@@ -542,7 +542,7 @@ if (window.solana) {
     walletPublicKey = null;
     walletConnected = false;
     updateWalletUI();
-    showToast('閽卞寘宸叉柇寮€杩炴帴', 'info');
+    showToast('钱包已断开连接', 'info');
   });
   if (window.solana.isConnected) {
     walletPublicKey = window.solana.publicKey;
