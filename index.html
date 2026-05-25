@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>传世窖池 · DAC数字商城</title>
+<script src="lib/solana-web3.min.js"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -318,6 +319,11 @@ function showPaymentModal(productId) {
     </button>
   `;
   document.getElementById('paymentModal').classList.add('active');
+  // 防止弹窗刚打开就被意外关闭（TP钱包WebView可能触发额外click事件）
+  document.getElementById('paymentModal').setAttribute('data-just-opened', '1');
+  setTimeout(function() {
+    document.getElementById('paymentModal').removeAttribute('data-just-opened');
+  }, 500);
 }
 
 function closeModal(id) {
@@ -328,7 +334,7 @@ document.getElementById('detailModal').addEventListener('click', function(e) {
   if (e.target === this) closeModal('detailModal');
 });
 document.getElementById('paymentModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal('paymentModal');
+  if (e.target === this && !this.hasAttribute('data-just-opened')) closeModal('paymentModal');
 });
 
 function showToast(msg, type) {
@@ -436,49 +442,36 @@ function createTransferInstruction(source, destination, owner, amount) {
 
 let solWeb3 = null;
 
-async function ensureSolanaLib() {
+function ensureSolanaLib() {
   if (solWeb3) return solWeb3;
-  // solana/web3.js IIFE 暴露的全局变量是 solanaWeb3
-  if (window.solanaWeb3) { solWeb3 = window.solanaWeb3; initProgramIds(); return solWeb3; }
-
-  // 优先加载本地库（同域名，TP钱包兼容最好）
-  const CDN_LIST = [
-    'lib/solana-web3.min.js',
-    'https://cdn.jsdelivr.net/npm/@solana/web3.js@1.95.4/lib/index.iife.min.js',
-    'https://unpkg.com/@solana/web3.js@1.95.4/lib/index.iife.min.js'
-  ];
-
-  for (const src of CDN_LIST) {
-    try {
-      await new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = src;
-        s.onload = () => {
-          if (window.solanaWeb3) { solWeb3 = window.solanaWeb3; initProgramIds(); resolve(); }
-          else reject(new Error('solanaWeb3 未挂载'));
-        };
-        s.onerror = () => reject(new Error('failed: ' + src));
-        document.head.appendChild(s);
-      });
-      console.log('[DAC Store] solana lib loaded from:', src);
-      return solWeb3;
-    } catch(e) {
-      console.warn('[DAC Store] CDN failed, trying next:', src, e.message);
-    }
+  if (window.solanaWeb3) {
+    solWeb3 = window.solanaWeb3;
+    initProgramIds();
+    console.log('[DAC Store] solana lib ready');
+    return solWeb3;
   }
-  throw new Error('所有CDN均加载失败，请检查网络');
+  throw new Error('Solana库未加载，请刷新页面');
 }
 
 async function buyProduct(productId) {
+  // 阻止事件冒泡，防止弹窗被意外关闭
+  if (event) { event.preventDefault(); event.stopPropagation(); }
+
   if (!walletConnected || !walletPublicKey) {
     showToast('请先连接TP钱包', 'info');
     await connectWallet();
     if (!walletConnected) return;
   }
-  try { await ensureSolanaLib(); } catch(e) {
-    showToast('Solana库加载失败，请检查网络', 'error'); return;
+
+  // Solana 库已在 <head> 中同步加载，直接使用
+  try {
+    ensureSolanaLib();
+  } catch(e) {
+    showToast('Solana库未加载，请刷新页面后重试', 'error');
+    return;
   }
-  // 直接显示支付弹窗，RPC连接在确认支付时处理
+
+  // 直接显示支付弹窗
   showPaymentModal(productId);
 }
 
@@ -643,6 +636,13 @@ if (window.solana) {
     walletConnected = true;
     updateWalletUI();
   }
+}
+
+// 页面初始化：加载 Solana 库（已在 <head> 同步引入）
+if (window.solanaWeb3) {
+  solWeb3 = window.solanaWeb3;
+  initProgramIds();
+  console.log('[DAC Store] solanaWeb3 initialized on page load');
 }
 
 initStore();
