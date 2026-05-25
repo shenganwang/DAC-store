@@ -533,27 +533,47 @@ async function executePayment(productId) {
       statusEl.textContent = '请在TP钱包中确认交易...';
       statusEl.style.color = 'var(--gold-light)';
       
-      const result = await window.solana.signAndSendTransaction(tx);
-      const signature = typeof result === 'string' ? result : (result.signature || '');
-      
-      if (!signature) throw new Error('交易未返回签名');
-      
-      statusEl.innerHTML = `
-        <div style="font-size:40px;margin-bottom:12px">✅</div>
-        <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
-        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-          已支付 ${p.price.toLocaleString()} DAC · ${p.name}
-        </div>
-        <a class="tx-link" href="https://solscan.io/tx/${signature}" target="_blank">
-          查看链上交易: ${signature.slice(0,12)}...${signature.slice(-8)}
-        </a>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:8px">交易已提交，等待链上确认</div>
-      `;
-      statusEl.style.color = 'var(--success)';
-      btn.style.display = 'none';
-      updatePaymentSteps(3);
-      showToast('支付已提交! ' + signature.slice(0,8) + '...', 'success');
-      return;
+      var sigResult = null;
+      try {
+        sigResult = await window.solana.signAndSendTransaction(tx);
+        console.log('[DAC Store] signAndSendTransaction result:', JSON.stringify(sigResult));
+      } catch(e) {
+        console.warn('[DAC Store] signAndSendTransaction threw:', e.message, e.code);
+        // 用户取消或其他钱包错误 → 降级到策略2
+        if (e.code === 4001) {
+          throw new Error('用户取消了交易');
+        }
+        // 非取消错误也降级试试
+        statusEl.textContent = 'TP钱包签名方式失败，尝试手动签名...';
+      }
+
+      var signature = null;
+      if (sigResult) {
+        signature = typeof sigResult === 'string' ? sigResult : (sigResult.signature || sigResult.txid || sigResult.txId || '');
+      }
+
+      if (signature) {
+        statusEl.innerHTML = `
+          <div style="font-size:40px;margin-bottom:12px">✅</div>
+          <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
+            已支付 ${p.price.toLocaleString()} DAC · ${p.name}
+          </div>
+          <a class="tx-link" href="https://solscan.io/tx/${signature}" target="_blank">
+            查看链上交易: ${signature.slice(0,12)}...${signature.slice(-8)}
+          </a>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:8px">交易已提交，等待链上确认</div>
+        `;
+        statusEl.style.color = 'var(--success)';
+        btn.style.display = 'none';
+        updatePaymentSteps(3);
+        showToast('支付已提交! ' + signature.slice(0,8) + '...', 'success');
+        return;
+      }
+
+      // signAndSendTransaction 没拿到签名 → 降级尝试策略2
+      console.warn('[DAC Store] signAndSendTransaction returned no signature, falling back');
+      statusEl.textContent = 'TP钱包未返回签名，切换手动签名方式...';
     }
 
     // 策略2：回退到手动签名 + RPC发送
