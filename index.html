@@ -194,7 +194,13 @@ const storeConfig = {
     tokenMint: "GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump",
     tokenDecimals: 6,
     tokenSymbol: "DAC",
-    rpcUrl: "https://api.mainnet-beta.solana.com"
+    rpcUrls: [
+      "https://api.mainnet-beta.solana.com",
+      "https://solana-mainnet.g.alchemy.com/v2/demo",
+      "https://rpc.ankr.com/solana",
+      "https://mainnet.solana.rpcpool.com",
+      "https://solana-api.tttc.one"
+    ]
   },
   products: [
     { id: "pinjian-100", name: "传世窖池·品鉴卡", tagline: "入门之选，品味传世", price: 100, image: "images/img-product-01.png", description: "泸州老窖传世窖池酒数字品鉴资格。购买后获得链上品鉴凭证，可凭此参与传世窖池品鉴活动，享受专属优惠购买权。", features: ["链上品鉴凭证，不可篡改", "享实物酒专属折扣价", "加入传世窖池品鉴社群", "优先获取新品信息"], type: "digital" },
@@ -472,8 +478,27 @@ async function buyProduct(productId) {
   try { await ensureSolanaLib(); } catch(e) {
     showToast('Solana库加载失败，请检查网络', 'error'); return;
   }
-  if (!connection) { connection = new solWeb3.Connection(storeConfig.store.rpcUrl, 'confirmed'); }
+  if (!connection) {
+    connection = await ensureConnection();
+    if (!connection) { showToast('无法连接Solana网络，请重试', 'error'); return; }
+  }
   showPaymentModal(productId);
+}
+
+async function ensureConnection() {
+  const urls = storeConfig.store.rpcUrls;
+  for (const url of urls) {
+    try {
+      const conn = new solWeb3.Connection(url, 'confirmed');
+      // 测试连接：获取最新区块高度
+      await conn.getBlockHeight();
+      console.log('[DAC Store] RPC connected:', url);
+      return conn;
+    } catch(e) {
+      console.warn('[DAC Store] RPC failed:', url, e.message);
+    }
+  }
+  return null;
 }
 
 async function executePayment(productId) {
@@ -514,14 +539,27 @@ async function executePayment(productId) {
     const tx = new solWeb3.Transaction();
     tx.feePayer = walletPublicKey;
 
-    const recipientAccount = await connection.getAccountInfo(recipientATA);
-    if (!recipientAccount) {
-      tx.add(createAssociatedTokenAccountInstruction(
-        walletPublicKey,
-        recipientATA,
-        recipient,
-        mint
-      ));
+    // 尝试检查收款方ATA是否存在，网络不可达时跳过此检查
+    let recipientExists = true;
+    try {
+      const recipientAccount = await connection.getAccountInfo(recipientATA);
+      recipientExists = !!recipientAccount;
+    } catch(e) {
+      console.warn('[DAC Store] 无法检查收款方ATA，跳过创建:', e.message);
+      // 网络不可达时，假设ATA已存在，避免创建已存在的ATA导致交易失败
+    }
+    
+    if (!recipientExists) {
+      try {
+        tx.add(createAssociatedTokenAccountInstruction(
+          walletPublicKey,
+          recipientATA,
+          recipient,
+          mint
+        ));
+      } catch(e) {
+        console.warn('[DAC Store] 创建ATA失败(可能已存在):', e.message);
+      }
     }
 
     tx.add(createTransferInstruction(userATA, recipientATA, walletPublicKey, amount));
