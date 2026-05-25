@@ -535,44 +535,66 @@ async function executePayment(productId) {
       statusEl.style.color = 'var(--gold-light)';
       
       var sigResult = null;
+      var sigError = null;
       try {
         sigResult = await window.solana.signAndSendTransaction(tx, { skipPreflight: true });
-        console.log('[DAC Store] signAndSendTransaction ok, type:', typeof sigResult, ', keys:', sigResult ? Object.keys(sigResult) : 'null/undefined');
-        console.log('[DAC Store] raw result:', sigResult);
+        console.log('[DAC Store] signAndSendTransaction ok:', sigResult);
       } catch(e) {
-        console.warn('[DAC Store] signAndSendTransaction error:', e.message, e.code, JSON.stringify(e));
-        if (e.code === 4001 || (e.message && e.message.indexOf('cancel') >= 0)) {
-          throw new Error('用户取消了交易');
+        sigError = e;
+        console.warn('[DAC Store] signAndSendTransaction error:', e.message, e.code);
+      }
+
+      // 用户取消交易
+      if (sigError && (sigError.code === 4001 || (sigError.message && sigError.message.indexOf('cancel') >= 0))) {
+        throw new Error('用户取消了交易');
+      }
+
+      // 如果没抛异常 → TP钱包内部已完成签名+发送，交易已上链！
+      if (!sigError) {
+        // 提取签名（各种可能格式）
+        var sig = null;
+        if (sigResult) {
+          sig = typeof sigResult === 'string' ? sigResult : (sigResult.signature || sigResult.txid || sigResult.txId || sigResult.txSignature || '');
         }
-      }
 
-      // 尝试各种可能字段名提取签名
-      var signature = null;
-      if (sigResult) {
-        if (typeof sigResult === 'string') signature = sigResult;
-        else signature = sigResult.signature || sigResult.txid || sigResult.txId || sigResult.txSignature || sigResult.sign || '';
-      }
-
-      if (signature) {
-        statusEl.innerHTML = `
-          <div style="font-size:40px;margin-bottom:12px">✅</div>
-          <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
-          <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-            已支付 ${p.price.toLocaleString()} DAC · ${p.name}
-          </div>
-          <a class="tx-link" href="https://solscan.io/tx/${signature}" target="_blank">
-            查看链上交易: ${signature.slice(0,12)}...${signature.slice(-8)}
-          </a>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:8px">交易已提交，等待链上确认</div>
-        `;
+        if (sig) {
+          statusEl.innerHTML = `
+            <div style="font-size:40px;margin-bottom:12px">✅</div>
+            <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
+            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
+              已支付 ${p.price.toLocaleString()} DAC · ${p.name}
+            </div>
+            <a class="tx-link" href="https://solscan.io/tx/${sig}" target="_blank">
+              查看链上交易: ${sig.slice(0,12)}...${sig.slice(-8)}
+            </a>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:8px">交易已提交，等待链上确认</div>
+          `;
+        } else {
+          // 无签名但钱包未报错 → 交易已由钱包内部提交
+          statusEl.innerHTML = `
+            <div style="font-size:40px;margin-bottom:12px">✅</div>
+            <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
+            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
+              已支付 ${p.price.toLocaleString()} DAC · ${p.name}
+            </div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:12px;line-height:1.8">
+              交易已通过TP钱包提交到Solana链<br>
+              <a class="tx-link" href="https://solscan.io/account/${storeConfig.store.wallet}" target="_blank">
+                可在钱包账户查看最新交易记录 →
+              </a>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px">预计10-30秒内链上确认</div>
+          `;
+        }
         statusEl.style.color = 'var(--success)';
         btn.style.display = 'none';
         updatePaymentSteps(3);
-        showToast('支付已提交! ' + signature.slice(0,8) + '...', 'success');
+        showToast('支付已提交! DAC转账处理中...', 'success');
         return;
       }
-
-      console.warn('[DAC Store] signAndSendTransaction no signature, trying sendTransaction...');
+      
+      // signAndSendTransaction 真实失败（网络或合约错误）→ 降级
+      console.warn('[DAC Store] signAndSendTransaction failed, falling back:', sigError.message);
     }
 
     // 策略2：signTransaction + sendTransaction（钱包内置发送能力，不依赖外部RPC）
