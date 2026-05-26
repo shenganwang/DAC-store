@@ -14,7 +14,7 @@
       "id": "pinjian-1000000",
       "name": "传世窖池·品鉴卡",
       "tagline": "入门之选，品味传世",
-      "price": 1000000DAC,
+      "price": 1000000,
       "image": "images/img-product-01.png",
       "description": "泸州老窖传世窖池酒数字品鉴资格。购买后获得链上品鉴凭证，可凭此参与传世窖池品鉴活动，享受专属优惠购买权。",
       "features": [
@@ -29,7 +29,7 @@
       "id": "zunxiang-5000000",
       "name": "传世窖池·尊享卡",
       "tagline": "尊享权益，窖主身份",
-      "price": 5000000DAC,
+      "price": 5000000,
       "image": "images/img-product-04.png",
       "description": "泸州老窖传世窖池酒尊享数字权益卡。购买即成为"传世窖池"数字股东，享有实物酒优先购买权、限量版藏品空投、窖池参观预约等尊贵权益。",
       "features": [
@@ -61,7 +61,7 @@
       "id": "wine-premium",
       "name": "传世窖池·臻藏限量",
       "tagline": "臻藏之选，限量发行",
-      "price": 5000000DAC,
+      "price": 5000000,
       "image": "images/img-product-03.png",
       "description": "泸州老窖传世窖池臻藏限量版，精选优质窖池原浆，历经数年窖藏。每瓶均有独立编号，DAC支付即完成链上确权，支持实物发货。",
       "features": [
@@ -77,7 +77,7 @@
       "id": "wine-vip",
       "name": "传世窖池·窖主尊享",
       "tagline": "窖主专属，传世珍藏",
-      "price": 1000000DAC,
+      "price": 1000000,
       "image": "images/img-product-02.jpg",
       "description": "传世窖池最高等级窖主专属酒款，仅限持有尊享卡用户购买。每一滴都来自数十年老窖池，产量极低，存世稀少。购买即获得链上窖主认证NFT。",
       "features": [
