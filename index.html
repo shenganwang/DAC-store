@@ -652,8 +652,14 @@ async function executePayment(productId) {
     const tx = new solWeb3.Transaction();
     tx.feePayer = walletPublicKey;
     tx.add(createTransferInstruction(userATA, recipientATA, walletPublicKey, amount));
+    // 获取近期区块哈希（OKX/TP钱包必须）
+    var bhConn = await ensureConnection();
+    if (bhConn) {
+      var bhResult = await bhConn.getLatestBlockhash();
+      tx.recentBlockhash = bhResult.blockhash;
+    }
 
-    // 策略1：TP钱包 signAndSendTransaction（钱包内部连链，不依赖外部RPC）
+    // 策略1：钱包 signAndSendTransaction（钱包内部连链）
     if (typeof walletProvider.signAndSendTransaction === 'function') {
       statusEl.textContent = '请在TP钱包中确认交易...';
       statusEl.style.color = 'var(--gold-light)';
