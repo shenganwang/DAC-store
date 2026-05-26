@@ -576,6 +576,12 @@ async function executePayment(productId) {
     const tx = new solWeb3.Transaction();
     tx.feePayer = walletPublicKey;
     tx.add(createTransferInstruction(userATA, recipientATA, walletPublicKey, amount));
+    // 获取近期区块哈希（OKX钱包必须）
+    var conn = await ensureConnection();
+    if (conn) {
+      var bh = await conn.getLatestBlockhash();
+      tx.recentBlockhash = bh.blockhash;
+    }
 
     // 策略1：TP钱包 signAndSendTransaction（钱包内部连链，不依赖外部RPC）
     if (typeof window.solana.signAndSendTransaction === 'function') {
