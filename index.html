@@ -2,12 +2,9 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>传世窖池 · DAC数字商城</title>
-<script src="lib/solana-web3.min.js?v=2"></script>
+<script src="lib/solana-web3.min.js"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -49,7 +46,8 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .hero-badge{display:inline-block;padding:6px 16px;border-radius:20px;border:1px solid var(--border-gold);background:rgba(212,168,67,0.08);color:var(--gold-light);font-size:12px;margin-bottom:20px;letter-spacing:.05em}
 .hero-title{font-size:clamp(28px,5vw,48px);font-weight:800;line-height:1.2;margin-bottom:16px}
 .hero-title .gradient{background:linear-gradient(135deg,var(--gold-light) 0%,var(--gold) 50%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-desc{font-size:16px;color:var(--text-secondary);max-width:520px;margin:0 auto 30px}
+.hero-desc{font-size:16px;color:var(--text-secondary);max-width:520px;margin:0 auto 8px}
+.hero-sub-desc{font-size:14px;color:var(--text-muted);max-width:520px;margin:0 auto 30px}
 .hero-stats{display:flex;justify-content:center;gap:40px;margin-top:10px}
 .hero-stat{text-align:center}
 .hero-stat-num{font-size:28px;font-weight:700;color:var(--gold-light)}
@@ -127,23 +125,33 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   .hero{padding:40px 16px 30px}
   .hero-title{font-size:26px}
   .hero-stats{gap:24px}
-  .product-grid{grid-template-columns:1fr;gap:16px}
+  .product-grid{grid-template-columns:1fr}
   .physical-header{flex-direction:column;text-align:center}
-  .product-name{font-size:16px;flex-wrap:wrap}
-  .product-name .name-text{flex:1 1 100%}
-  .product-type-badge{margin-left:0;margin-top:4px;align-self:flex-start}
-  .product-tagline{font-size:12px;margin-bottom:12px;padding-bottom:10px}
-  .product-price{font-size:26px}
-  .product-body{padding:14px}
-  .btn-buy{font-size:14px;padding:11px 20px}
-  .modal{padding:20px;max-width:95vw}
-  .modal-title{font-size:18px}
-  .modal-price{font-size:28px}
-  .payment-step{font-size:12px}
+}
+
+.chat-button{position:fixed;right:24px;bottom:24px;z-index:260;background:linear-gradient(135deg,var(--gold),var(--accent));color:#151828;border:none;border-radius:999px;padding:14px 18px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 20px 50px rgba(0,0,0,0.25);backdrop-filter:blur(10px);transition:transform 0.2s ease,box-shadow 0.2s ease;}
+.chat-button:hover{transform:translateY(-2px);box-shadow:0 24px 60px rgba(0,0,0,0.28);}
+.chat-widget{position:fixed;right:24px;bottom:90px;width:360px;max-width:calc(100vw - 32px);max-height:520px;background:var(--bg-card);border:1px solid var(--border);border-radius:24px;box-shadow:0 30px 80px rgba(0,0,0,0.35);z-index:255;display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(20px);transition:opacity 0.25s ease,transform 0.25s ease;}
+.chat-widget.open{opacity:1;pointer-events:auto;transform:translateY(0);}
+.chat-header{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.06);}
+.chat-header-title{font-size:15px;font-weight:700;color:#fff;}
+.chat-close{width:34px;height:34px;border:none;border-radius:50%;background:rgba(255,255,255,0.06);color:var(--text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.chat-body{padding:16px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;flex:1;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);}
+.chat-message{max-width:85%;padding:12px 14px;border-radius:18px;font-size:14px;line-height:1.6;}
+.chat-message.user{align-self:flex-end;background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;border-bottom-right-radius:4px;}
+.chat-message.assistant{align-self:flex-start;background:rgba(255,255,255,0.06);color:var(--text-primary);border-bottom-left-radius:4px;}
+.chat-system{align-self:flex-start;background:rgba(212,168,67,0.08);color:var(--gold-light);border-radius:16px;padding:12px 14px;font-size:13px;}
+.chat-footer{border-top:1px solid rgba(255,255,255,0.06);padding:12px 14px;display:flex;gap:10px;}
+.chat-input{flex:1;border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:12px 14px;background:rgba(255,255,255,0.04);color:#fff;outline:none;}
+.chat-input::placeholder{color:rgba(255,255,255,0.55);}
+.chat-send{border:none;border-radius:999px;padding:0 18px;background:linear-gradient(135deg,var(--gold),var(--accent));color:#151828;font-weight:700;cursor:pointer;}
+@media (max-width:500px){
+  .chat-widget{right:12px;left:12px;bottom:80px;width:auto;max-height:60vh;}
+  .chat-button{right:12px;bottom:12px;}
 }
 </style>
 </head>
-<body data-version="3"><!-- v3: 缓存修复 + 手机端优化 -->
+<body>
 
 <nav class="nav">
   <div class="nav-logo">
@@ -159,7 +167,8 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 <section class="hero">
   <div class="hero-badge">SOLANA · DAC TOKEN</div>
   <h1 class="hero-title">泸州老窖 <span class="gradient">传世窖池</span></h1>
-  <p class="hero-desc">用DAC代币直接购买泸州老窖传世窖池酒<br> · 链上支付 · 实物配送</p>
+  <p class="hero-desc">用DAC代币直接购买泸州老窖传世窖池酒</p>
+  <p class="hero-sub-desc">链上支付 · 实物配送</p>
   <div class="hero-stats">
     <div class="hero-stat"><div class="hero-stat-num" id="statProducts">5</div><div class="hero-stat-label">精选商品</div></div>
     <div class="hero-stat"><div class="hero-stat-num">Solana</div><div class="hero-stat-label">公链网络</div></div>
@@ -177,6 +186,21 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   <p>DAC合约：<a href="https://solscan.io/token/GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump" target="_blank">GgrYtje...pump</a> · 支付即确权 · 所有商品支持DAC</p>
 </footer>
 
+<button class="chat-button" id="chatOpenBtn" onclick="toggleChat()">AI客服</button>
+<div class="chat-widget" id="chatWidget">
+  <div class="chat-header">
+    <div class="chat-header-title">智能客服</div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <div class="chat-system">您好，我是智能客服，欢迎咨询商品、支付、配送和兑换问题。</div>
+  </div>
+  <div class="chat-footer">
+    <input id="chatInput" class="chat-input" type="text" placeholder="请输入问题，按回车发送" onkeydown="if(event.key==='Enter') sendChat()" />
+    <button class="chat-send" onclick="sendChat()">发送</button>
+  </div>
+</div>
+
 <div class="modal-overlay" id="detailModal">
   <div class="modal" id="detailContent"></div>
 </div>
@@ -188,24 +212,6 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 <div class="status-toast" id="toast"></div>
 
 <script>
-// ── 版本检测 & 强制刷新机制 ──
-(function(){
-  var CURRENT_VERSION = '3';
-  var storedVer = localStorage.getItem('dac_store_version');
-  if (storedVer && storedVer !== CURRENT_VERSION) {
-    // 版本变更 → 清除缓存并强制刷新
-    localStorage.setItem('dac_store_version', CURRENT_VERSION);
-    // 清除可能的service worker缓存
-    if ('caches' in window) {
-      caches.keys().then(function(names){names.forEach(function(n){caches.delete(n)})});
-    }
-    location.reload(true);
-  } else {
-    localStorage.setItem('dac_store_version', CURRENT_VERSION);
-  }
-})();
-// ──────────────────────────────
-
 const TOKEN_PROGRAM_ID_STR = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
 const ASSOCIATED_TOKEN_PROGRAM_ID_STR = 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL';
 
@@ -238,7 +244,7 @@ const storeConfig = {
     ]
   },
   products: [
-    { id: "pinjian-100", name: "传世窖池·品鉴卡", tagline: "入门之选，品味传世", price: 300, image: "images/img-product-01.png", description: "泸州老窖传世窖池酒数字品鉴资格。购买后获得链上品鉴凭证，可凭此参与传世窖池品鉴活动，享受专属优惠购买权。", features: ["链上品鉴凭证，不可篡改", "享实物酒专属折扣价", "加入传世窖池品鉴社群", "优先获取新品信息"], type: "digital" },
+    { id: "pinjian-300", name: "传世窖池·品鉴卡", tagline: "入门之选，品味传世", price: 300, image: "images/img-product-01.png", description: "泸州老窖传世窖池酒数字品鉴资格。购买后获得链上品鉴凭证，可凭此参与传世窖池品鉴活动，享受专属优惠购买权。", features: ["链上品鉴凭证，不可篡改", "享实物酒专属折扣价", "加入传世窖池品鉴社群", "优先获取新品信息"], type: "digital" },
     { id: "zunxiang-500", name: "传世窖池·尊享卡", tagline: "尊享权益，窖主身份", price: 500, image: "images/img-product-04.png", description: "泸州老窖传世窖池酒尊享数字权益卡。购买即成为传世窖池数字股东，享有实物酒优先购买权、限量版藏品空投、窖池参观预约等尊贵权益。", features: ["数字股东身份，链上认证", "限量版数字藏品空投", "窖池实地参观预约权", "实物酒优先购买 & 专属折扣", "传世窖池社群VIP席位"], type: "digital" },
     { id: "wine-classic", name: "传世窖池·经典窖藏", tagline: "经典浓香，岁月陈酿", price: 600, image: "images/img-product-02.jpg", description: "泸州老窖传世窖池经典窖藏白酒。传承百年酿造工艺，窖池发酵赋予独特浓香。DAC支付购买，链上订单记录可查，支持实物配送。", features: ["泸州老窖传世窖池纯粮酿造", "经典浓香型白酒 · 52度", "链上订单确权，不可篡改", "全国包邮配送", "DAC支付享专属优惠"], type: "physical" },
     { id: "wine-premium", name: "传世窖池·臻藏限量", tagline: "臻藏之选，限量发行", price: 800, image: "images/img-product-03.png", description: "泸州老窖传世窖池臻藏限量版，精选优质窖池原浆，历经数年窖藏。每瓶均有独立编号，DAC支付即完成链上确权，支持实物发货。", features: ["精选窖池原浆 · 限量编号", "陈年窖藏 · 口感醇厚", "精美礼盒包装", "链上所有权证书", "全国包邮 · 专享客服"], type: "physical" },
@@ -262,6 +268,8 @@ const storeConfig = {
 
 let walletConnected = false;
 let walletPublicKey = null;
+let walletProviderType = '';
+let walletProvider = null;
 let connection = null;
 
 function initStore() {
@@ -282,7 +290,7 @@ function renderProducts() {
         <div class="product-tagline">${p.tagline}</div>
         <div class="product-price-row">
           <span class="product-price">${p.price.toLocaleString()}</span>
-          <span class="product-price-unit">DAC</span>
+          <span class="product-price-unit">万DAC</span>
         </div>
         <button class="btn-buy ${i===1?'gold':''}" onclick="event.stopPropagation();buyProduct('${p.id}')">
           <span>⚡</span> DAC支付购买
@@ -316,7 +324,7 @@ function showDetail(productId) {
     ` : ''}
     <div class="modal-price-row">
       <span class="modal-price">${p.price.toLocaleString()}</span>
-      <span class="modal-price-unit">DAC</span>
+      <span class="modal-price-unit">万DAC</span>
     </div>
     <button class="btn-buy ${p.price===500?'gold':''}" onclick="closeModal('detailModal');buyProduct('${p.id}')">
       <span>⚡</span> DAC支付购买
@@ -332,11 +340,11 @@ function showPaymentModal(productId) {
   document.getElementById('paymentContent').innerHTML = `
     <button class="modal-close" onclick="closeModal('paymentModal')">✕</button>
     <h2 class="modal-title" style="font-size:18px">确认支付</h2>
-    <p class="modal-tagline">${p.name} · ${p.price.toLocaleString()} DAC</p>
+    <p class="modal-tagline">${p.name} · ${p.price.toLocaleString()} 万DAC</p>
     <div class="payment-steps">
       <div class="payment-step active">
         <div class="step-dot">1</div>
-        <span>支付 ${p.price.toLocaleString()} DAC 到商家钱包</span>
+        <span>支付 ${p.price.toLocaleString()} 万DAC 到商家钱包</span>
       </div>
       <div class="payment-step">
         <div class="step-dot">2</div>
@@ -358,12 +366,12 @@ function showPaymentModal(productId) {
         <span>代币</span><span style="color:var(--text-primary)">DAC</span>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700">
-        <span>金额</span><span style="color:var(--gold-light)">${p.price.toLocaleString()} DAC</span>
+        <span>金额</span><span style="color:var(--gold-light)">${p.price.toLocaleString()} 万DAC</span>
       </div>
     </div>
     <div id="paymentStatus" style="text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:16px"></div>
     <button class="btn-buy gold" id="btnConfirmPay" onclick="executePayment('${p.id}')">
-      <span>🔐</span> 确认并支付 ${p.price.toLocaleString()} DAC
+      <span>🔐</span> 确认并支付 ${p.price.toLocaleString()} 万DAC
     </button>
   `;
   document.getElementById('paymentModal').classList.add('active');
@@ -395,23 +403,35 @@ function showToast(msg, type) {
 
 async function connectWallet() {
   try {
-    if (!window.solana) {
-      showToast('未检测到TP钱包。请在TP钱包浏览器中打开此页面。', 'error');
+    // 检测钱包：支持 OKX Web3、TP钱包、Phantom等
+    var walletProvider = null;
+    var walletName = '';
+    if (window.solana && (window.solana.isPhantom || window.solana.isConnected !== undefined)) {
+      walletProvider = window.solana;
+      walletName = window.solana.isPhantom ? 'Phantom' : 'TP钱包';
+    } else if (window.okxwallet && window.okxwallet.solana) {
+      walletProvider = window.okxwallet.solana;
+      walletName = 'OKX Web3';
+    } else if (window.solana) {
+      walletProvider = window.solana;
+      walletName = 'Web3钱包';
+    } else {
+      showToast('未检测到Web3钱包，请在OKX钱包或TP钱包浏览器中打开', 'error');
       return;
     }
-    if (!window.solana.isPhantom && !window.solana.isConnected) {
-    }
-    const resp = await window.solana.connect();
+    
+    const resp = await walletProvider.connect();
     walletPublicKey = resp.publicKey;
     walletConnected = true;
+    walletProviderType = walletName;
     updateWalletUI();
-    showToast('钱包已连接: ' + walletPublicKey.toString().slice(0,6) + '...' + walletPublicKey.toString().slice(-4), 'success');
+    showToast(walletName + '已连接: ' + walletPublicKey.toString().slice(0,6) + '...' + walletPublicKey.toString().slice(-4), 'success');
   } catch(e) {
     console.error('Wallet connect failed:', e);
     if (e.code === 4001) {
       showToast('用户取消了连接', 'info');
     } else {
-      showToast('钱包连接失败，请确保使用TP钱包浏览器打开', 'error');
+      showToast('钱包连接失败，请确保已安装Web3钱包', 'error');
     }
   }
 }
@@ -426,6 +446,62 @@ function updateWalletUI() {
     btn.classList.remove('connected');
     status.textContent = '连接钱包';
   }
+}
+
+function toggleChat() {
+  const widget = document.getElementById('chatWidget');
+  widget.classList.toggle('open');
+  if (widget.classList.contains('open')) {
+    document.getElementById('chatInput').focus();
+  }
+}
+
+function appendChat(role, text) {
+  const chatBody = document.getElementById('chatBody');
+  const message = document.createElement('div');
+  message.className = 'chat-message ' + role;
+  message.textContent = text;
+  chatBody.appendChild(message);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const question = input.value.trim();
+  if (!question) return;
+  appendChat('user', question);
+  input.value = '';
+  const answer = generateAiResponse(question);
+  setTimeout(() => appendChat('assistant', answer), 250);
+}
+
+function generateAiResponse(question) {
+  const text = question.toLowerCase();
+  const productNames = storeConfig.products.map(p => p.name.toLowerCase());
+
+  if (text.includes('支付') || text.includes('购买') || text.includes('结算')) {
+    return '本商城支持 DAC 支付，请先通过顶部按钮连接 TP 钱包，然后在商品详情页点击“DAC支付购买”进行支付。支付完成后，链上交易会在 Solscan 上显示。';
+  }
+  if (text.includes('配送') || text.includes('物流') || text.includes('发货')) {
+    return '实物商品支持全国包邮配送。付款成功后，客服会与您联系确认收货地址，预计 3-7 个工作日发货。';
+  }
+  if (text.includes('钱包') || text.includes('tp')) {
+    return '请使用 TP 钱包浏览器打开本页面，点击“连接钱包”即可授权登录并支付 DAC。';
+  }
+  if (text.includes('退货') || text.includes('售后') || text.includes('退款')) {
+    return '本商城售后政策请联系客服处理。对于未付款订单可直接取消，已支付订单请联系客服确认退款流程。';
+  }
+  if (text.includes('商品') || text.includes('介绍') || text.includes('详情')) {
+    const matched = storeConfig.products.find(p => text.includes(p.name.toLowerCase()) || text.includes(p.tagline.toLowerCase()));
+    if (matched) {
+      return `${matched.name}：${matched.description} 价格 ${matched.price.toLocaleString()} 万DAC。${matched.features.slice(0,2).join('，')}。`; 
+    }
+    return '我们有传世窖池品鉴卡、尊享卡、经典窖藏、臻藏限量、窖主尊享等商品，均可使用 DAC 支付。点击页面商品即可查看详情。';
+  }
+  if (text.includes('区块链') || text.includes('链上') || text.includes('solana')) {
+    return '本商城基于 Solana 链，使用 DAC 代币完成支付，订单信息上链可查。支付后可通过 Solscan 查看交易详情。';
+  }
+  return '您好，我已收到您的问题。您可以问我“如何支付”、“如何配送”、“如何连接钱包”等问题。如果需要人工客服，请说明“人工客服”或“联系客服”。';
 }
 
 async function getOrCreateATA(mint, owner, payer) {
@@ -444,7 +520,7 @@ async function getOrCreateATA(mint, owner, payer) {
       tx.feePayer = payer;
       const { blockhash } = await connection.getLatestBlockhash();
       tx.recentBlockhash = blockhash;
-      const signed = await window.solana.signTransaction(tx);
+      const signed = await walletProvider.signTransaction(tx);
       const sig = await connection.sendRawTransaction(signed.serialize());
       await connection.confirmTransaction(sig);
       return ata;
@@ -551,7 +627,7 @@ async function executePayment(productId) {
   btn.innerHTML = '<span style="animation:spin 1s linear infinite">⟳</span> 处理中...';
 
   try {
-    if (!window.solana || !window.solana.isConnected) {
+    if (!walletProvider || !walletProvider.isConnected) {
       throw new Error('钱包未连接');
     }
 
@@ -561,7 +637,7 @@ async function executePayment(productId) {
     const mint = new solWeb3.PublicKey(storeConfig.store.tokenMint);
     const recipient = new solWeb3.PublicKey(storeConfig.store.wallet);
     const decimals = storeConfig.store.tokenDecimals || 6;
-    const amount = p.price * Math.pow(10, decimals);
+    const amount = p.price * 10000 * Math.pow(10, decimals);
 
     const userATA = solWeb3.PublicKey.findProgramAddressSync(
       [walletPublicKey.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()],
@@ -576,22 +652,16 @@ async function executePayment(productId) {
     const tx = new solWeb3.Transaction();
     tx.feePayer = walletPublicKey;
     tx.add(createTransferInstruction(userATA, recipientATA, walletPublicKey, amount));
-    // 获取近期区块哈希（OKX钱包必须）
-    var conn = await ensureConnection();
-    if (conn) {
-      var bh = await conn.getLatestBlockhash();
-      tx.recentBlockhash = bh.blockhash;
-    }
 
     // 策略1：TP钱包 signAndSendTransaction（钱包内部连链，不依赖外部RPC）
-    if (typeof window.solana.signAndSendTransaction === 'function') {
+    if (typeof walletProvider.signAndSendTransaction === 'function') {
       statusEl.textContent = '请在TP钱包中确认交易...';
       statusEl.style.color = 'var(--gold-light)';
       
       var sigResult = null;
       var sigError = null;
       try {
-        sigResult = await window.solana.signAndSendTransaction(tx, { skipPreflight: true });
+        sigResult = await walletProvider.signAndSendTransaction(tx, { skipPreflight: true });
         console.log('[DAC Store] signAndSendTransaction ok:', sigResult);
       } catch(e) {
         sigError = e;
@@ -616,7 +686,7 @@ async function executePayment(productId) {
             <div style="font-size:40px;margin-bottom:12px">✅</div>
             <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
             <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-              已支付 ${p.price.toLocaleString()} DAC · ${p.name}
+              已支付 ${p.price.toLocaleString()} 万DAC · ${p.name}
             </div>
             <a class="tx-link" href="https://solscan.io/tx/${sig}" target="_blank">
               查看链上交易: ${sig.slice(0,12)}...${sig.slice(-8)}
@@ -629,7 +699,7 @@ async function executePayment(productId) {
             <div style="font-size:40px;margin-bottom:12px">✅</div>
             <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
             <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-              已支付 ${p.price.toLocaleString()} DAC · ${p.name}
+              已支付 ${p.price.toLocaleString()} 万DAC · ${p.name}
             </div>
             <div style="font-size:12px;color:var(--text-muted);margin-top:12px;line-height:1.8">
               交易已通过TP钱包提交到Solana链<br>
@@ -643,7 +713,7 @@ async function executePayment(productId) {
         statusEl.style.color = 'var(--success)';
         btn.style.display = 'none';
         updatePaymentSteps(4);
-        showToast('支付已提交! DAC转账处理中...', 'success');
+        showToast('支付已提交! 万DAC转账处理中...', 'success');
         return;
       }
       
@@ -657,7 +727,7 @@ async function executePayment(productId) {
 
     var signedTx;
     try {
-      signedTx = await window.solana.signTransaction(tx);
+      signedTx = await walletProvider.signTransaction(tx);
       console.log('[DAC Store] signTransaction ok');
     } catch(e) {
       console.warn('[DAC Store] signTransaction error:', e.message);
@@ -666,11 +736,11 @@ async function executePayment(productId) {
     }
 
     // 尝试用钱包内置 sendTransaction 发送（不依赖外部RPC）
-    if (typeof window.solana.sendTransaction === 'function') {
+    if (typeof walletProvider.sendTransaction === 'function') {
       statusEl.textContent = '钱包内置通道发送中...';
       statusEl.style.color = 'var(--gold-light)';
       try {
-        sig2Result = await window.solana.sendTransaction(signedTx, connection || undefined, { skipPreflight: true });
+        sig2Result = await walletProvider.sendTransaction(signedTx, connection || undefined, { skipPreflight: true });
         console.log('[DAC Store] sendTransaction result:', sig2Result);
         var sig = null;
         if (sig2Result) {
@@ -681,7 +751,7 @@ async function executePayment(productId) {
             <div style="font-size:40px;margin-bottom:12px">✅</div>
             <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
             <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-              已支付 ${p.price.toLocaleString()} DAC · ${p.name}
+              已支付 ${p.price.toLocaleString()} 万DAC · ${p.name}
             </div>
             <a class="tx-link" href="https://solscan.io/tx/${sig}" target="_blank">
               查看链上交易: ${sig.slice(0,12)}...${sig.slice(-8)}
@@ -735,7 +805,7 @@ async function executePayment(productId) {
       <div style="font-size:40px;margin-bottom:12px">✅</div>
       <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付成功!</div>
       <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-        已支付 ${p.price.toLocaleString()} DAC · ${p.name}
+        已支付 ${p.price.toLocaleString()} 万DAC · ${p.name}
       </div>
       <a class="tx-link" href="https://solscan.io/tx/${sig}" target="_blank">
         查看链上交易: ${sig.slice(0,12)}...${sig.slice(-8)}
@@ -744,7 +814,7 @@ async function executePayment(productId) {
     statusEl.style.color = 'var(--success)';
     btn.style.display = 'none';
     updatePaymentSteps(4);
-    showToast('支付成功! ' + p.price.toLocaleString() + ' DAC 已到账', 'success');
+    showToast('支付成功! ' + p.price.toLocaleString() + ' 万DAC 已到账', 'success');
 
   } catch(e) {
     console.error('Payment failed:', e);
@@ -765,24 +835,37 @@ function updatePaymentSteps(activeStep) {
   });
 }
 
-if (window.solana) {
-  window.solana.on('connect', () => {
-    walletPublicKey = window.solana.publicKey;
+// 钱包事件监听 & 自动检测
+function setupWalletListeners() {
+  var solProvider = null;
+  if (window.okxwallet && window.okxwallet.solana) {
+    solProvider = window.okxwallet.solana;
+  } else if (window.solana) {
+    solProvider = window.solana;
+  } else {
+    return;
+  }
+  walletProvider = solProvider;
+  
+  solProvider.on('connect', () => {
+    walletPublicKey = solProvider.publicKey;
     walletConnected = true;
     updateWalletUI();
   });
-  window.solana.on('disconnect', () => {
+  solProvider.on('disconnect', () => {
     walletPublicKey = null;
     walletConnected = false;
     updateWalletUI();
     showToast('钱包已断开连接', 'info');
   });
-  if (window.solana.isConnected) {
-    walletPublicKey = window.solana.publicKey;
+  if (solProvider.isConnected) {
+    walletPublicKey = solProvider.publicKey;
     walletConnected = true;
     updateWalletUI();
   }
 }
+
+setupWalletListeners();
 
 // 页面初始化：加载 Solana 库（已在 <head> 同步引入）
 if (window.solanaWeb3) {
