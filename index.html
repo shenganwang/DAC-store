@@ -652,16 +652,27 @@ async function executePayment(productId) {
     const tx = new solWeb3.Transaction();
     tx.feePayer = walletPublicKey;
     tx.add(createTransferInstruction(userATA, recipientATA, walletPublicKey, amount));
-    // 获取近期区块哈希（OKX/TP钱包必须）
+    // 获取近期区块哈希（必须）
     var bhConn = await ensureConnection();
     if (bhConn) {
       var bhResult = await bhConn.getLatestBlockhash();
       tx.recentBlockhash = bhResult.blockhash;
+      tx.lastValidBlockHeight = bhResult.lastValidBlockHeight;
     }
 
-    // 策略1：钱包 signAndSendTransaction（钱包内部连链）
-    if (typeof walletProvider.signAndSendTransaction === 'function') {
-      statusEl.textContent = '请在TP钱包中确认交易...';
+    // 判断钱包类型
+    var isOkxWallet = walletProviderType.indexOf('OKX') >= 0;
+
+    // OKX钱包直接走 signTransaction + sendRawTransaction（兼容性最好）
+    if (isOkxWallet) {
+      statusEl.textContent = '请在钱包中确认签名...';
+      statusEl.style.color = 'var(--gold-light)';
+      // 直接进入签名+发送流程（跳到策略2）
+      // (后面共用策略2的逻辑)
+    }
+    // 非OKX钱包先尝试 signAndSendTransaction
+    else if (typeof walletProvider.signAndSendTransaction === 'function') {
+      statusEl.textContent = '请在钱包中确认交易...';
       statusEl.style.color = 'var(--gold-light)';
       
       var sigResult = null;
@@ -708,7 +719,7 @@ async function executePayment(productId) {
               已支付 ${p.price.toLocaleString()} 万DAC · ${p.name}
             </div>
             <div style="font-size:12px;color:var(--text-muted);margin-top:12px;line-height:1.8">
-              交易已通过TP钱包提交到Solana链<br>
+              交易已通过钱包提交到Solana链<br>
               <a class="tx-link" href="https://solscan.io/account/${storeConfig.store.wallet}" target="_blank">
                 可在钱包账户查看最新交易记录 →
               </a>
@@ -797,7 +808,7 @@ async function executePayment(productId) {
     }
 
     if (!sig) {
-      throw new Error('所有网络通道均发送失败，请检查TP钱包网络设置');
+      throw new Error('所有网络通道均发送失败，请检查网络设置');
     }
 
     // 尝试确认（非致命，可选）
