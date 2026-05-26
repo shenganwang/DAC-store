@@ -404,8 +404,8 @@ function showToast(msg, type) {
 async function connectWallet() {
   try {
     // 检测钱包：支持 OKX Web3、TP钱包、Phantom等
-    var walletProvider = null;
     var walletName = '';
+    walletProvider = null;  // 先重置，再检测
     if (window.solana && (window.solana.isPhantom || window.solana.isConnected !== undefined)) {
       walletProvider = window.solana;
       walletName = window.solana.isPhantom ? 'Phantom' : 'TP钱包';
