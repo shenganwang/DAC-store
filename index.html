@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -168,22 +168,22 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   <div class="hero-badge">SOLANA · DAC TOKEN</div>
   <h1 class="hero-title">泸州老窖 <span class="gradient">传世窖池</span></h1>
   <p class="hero-desc">用DAC代币直接购买泸州老窖传世窖池酒</p>
-  <p class="hero-sub-desc">链上支付 · 实物配送</p>
+  <p class="hero-sub-desc">链上兑换 · 实物配送</p>
   <div class="hero-stats">
     <div class="hero-stat"><div class="hero-stat-num" id="statProducts">5</div><div class="hero-stat-label">精选商品</div></div>
     <div class="hero-stat"><div class="hero-stat-num">Solana</div><div class="hero-stat-label">公链网络</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">DAC</div><div class="hero-stat-label">支付代币</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">DAC</div><div class="hero-stat-label">兑换代币</div></div>
   </div>
 </section>
 
 <div class="container">
-  <h2 class="section-title">全部商品 · DAC支付</h2>
-  <p class="section-sub">数字权益 + 实物窖藏酒，都用DAC代币直接支付。点击商品查看详情并购买。</p>
+  <h2 class="section-title">全部商品 · DAC兑换</h2>
+  <p class="section-sub">数字权益 + 实物窖藏酒，都用DAC代币直接兑换。点击商品查看详情并购买。</p>
   <div class="product-grid" id="productGrid"></div>
 </div>
 
 <footer class="footer">
-  <p>DAC合约：<a href="https://solscan.io/token/GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump" target="_blank">GgrYtje...pump</a> · 支付即确权 · 所有商品支持DAC</p>
+  <p>DAC合约：<a href="https://solscan.io/token/GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump" target="_blank">GgrYtje...pump</a> · 兑换即确权 · 所有商品支持DAC</p>
 </footer>
 
 <button class="chat-button" id="chatOpenBtn" onclick="toggleChat()">AI客服</button>
@@ -193,7 +193,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
     <button class="chat-close" onclick="toggleChat()">✕</button>
   </div>
   <div class="chat-body" id="chatBody">
-    <div class="chat-system">您好，我是智能客服，欢迎咨询商品、支付、配送和兑换问题。</div>
+    <div class="chat-system">您好，我是智能客服，欢迎咨询商品、兑换、配送问题。</div>
   </div>
   <div class="chat-footer">
     <input id="chatInput" class="chat-input" type="text" placeholder="请输入问题，按回车发送" onkeydown="if(event.key==='Enter') sendChat()" />
@@ -246,8 +246,8 @@ const storeConfig = {
   products: [
     { id: "pinjian-300", name: "传世窖池·品鉴卡", tagline: "入门之选，品味传世", price: 300, image: "images/img-product-01.png", description: "泸州老窖传世窖池酒数字品鉴资格。购买后获得链上品鉴凭证，可凭此参与传世窖池品鉴活动，享受专属优惠购买权。", features: ["链上品鉴凭证，不可篡改", "享实物酒专属折扣价", "加入传世窖池品鉴社群", "优先获取新品信息"], type: "digital" },
     { id: "zunxiang-500", name: "传世窖池·尊享卡", tagline: "尊享权益，窖主身份", price: 500, image: "images/img-product-04.png", description: "泸州老窖传世窖池酒尊享数字权益卡。购买即成为传世窖池数字股东，享有实物酒优先购买权、限量版藏品空投、窖池参观预约等尊贵权益。", features: ["数字股东身份，链上认证", "限量版数字藏品空投", "窖池实地参观预约权", "实物酒优先购买 & 专属折扣", "传世窖池社群VIP席位"], type: "digital" },
-    { id: "wine-classic", name: "传世窖池·经典窖藏", tagline: "经典浓香，岁月陈酿", price: 600, image: "images/img-product-02.jpg", description: "泸州老窖传世窖池经典窖藏白酒。传承百年酿造工艺，窖池发酵赋予独特浓香。DAC支付购买，链上订单记录可查，支持实物配送。", features: ["泸州老窖传世窖池纯粮酿造", "经典浓香型白酒 · 52度", "链上订单确权，不可篡改", "全国包邮配送", "DAC支付享专属优惠"], type: "physical" },
-    { id: "wine-premium", name: "传世窖池·臻藏限量", tagline: "臻藏之选，限量发行", price: 800, image: "images/img-product-03.png", description: "泸州老窖传世窖池臻藏限量版，精选优质窖池原浆，历经数年窖藏。每瓶均有独立编号，DAC支付即完成链上确权，支持实物发货。", features: ["精选窖池原浆 · 限量编号", "陈年窖藏 · 口感醇厚", "精美礼盒包装", "链上所有权证书", "全国包邮 · 专享客服"], type: "physical" },
+    { id: "wine-classic", name: "传世窖池·经典窖藏", tagline: "经典浓香，岁月陈酿", price: 600, image: "images/img-product-02.jpg", description: "泸州老窖传世窖池经典窖藏白酒。传承百年酿造工艺，窖池发酵赋予独特浓香。DAC兑换购买，链上订单记录可查，支持实物配送。", features: ["泸州老窖传世窖池纯粮酿造", "经典浓香型白酒 · 52度", "链上订单确权，不可篡改", "全国包邮配送", "DAC兑换享专属优惠"], type: "physical" },
+    { id: "wine-premium", name: "传世窖池·臻藏限量", tagline: "臻藏之选，限量发行", price: 800, image: "images/img-product-03.png", description: "泸州老窖传世窖池臻藏限量版，精选优质窖池原浆，历经数年窖藏。每瓶均有独立编号，DAC兑换即完成链上确权，支持实物发货。", features: ["精选窖池原浆 · 限量编号", "陈年窖藏 · 口感醇厚", "精美礼盒包装", "链上所有权证书", "全国包邮 · 专享客服"], type: "physical" },
     { id: "wine-vip", name: "传世窖池·窖主尊享", tagline: "窖主专属，传世珍藏", price: 1000, image: "images/img-product-02.jpg", description: "传世窖池最高等级窖主专属酒款，仅限持有尊享卡用户购买。每一滴都来自数十年老窖池，产量极低，存世稀少。购买即获得链上窖主认证NFT。", features: ["数十年老窖池原浆 · 稀缺珍品", "专属窖主认证NFT", "手工定制木盒包装", "VIP专属客服一对一服务", "全国包邮 · 保值回购承诺"], type: "physical" }
   ]
 };
@@ -293,7 +293,7 @@ function renderProducts() {
           <span class="product-price-unit">万DAC</span>
         </div>
         <button class="btn-buy ${i===1?'gold':''}" onclick="event.stopPropagation();buyProduct('${p.id}')">
-          <span>⚡</span> DAC支付购买
+          <span>⚡</span> DAC兑换购买
         </button>
       </div>
     </div>
@@ -319,7 +319,7 @@ function showDetail(productId) {
     </ul>
     ${p.type==='physical' ? `
     <div style="background:var(--bg-surface);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;font-size:13px;color:var(--text-secondary);border:1px dashed var(--border-gold)">
-      <span style="color:var(--gold-light)">📦 实物配送</span> — 支付成功后客服将联系您确认收货地址，全国包邮。
+      <span style="color:var(--gold-light)">📦 实物配送</span> — 兑换成功后客服将联系您确认收货地址，全国包邮。
     </div>
     ` : ''}
     <div class="modal-price-row">
@@ -327,7 +327,7 @@ function showDetail(productId) {
       <span class="modal-price-unit">万DAC</span>
     </div>
     <button class="btn-buy ${p.price===500?'gold':''}" onclick="closeModal('detailModal');buyProduct('${p.id}')">
-      <span>⚡</span> DAC支付购买
+      <span>⚡</span> DAC兑换购买
     </button>
   `;
   document.getElementById('detailModal').classList.add('active');
@@ -339,12 +339,12 @@ function showPaymentModal(productId) {
   const shortAddr = walletPublicKey ? walletPublicKey.toString().slice(0,4)+'...'+walletPublicKey.toString().slice(-4) : '';
   document.getElementById('paymentContent').innerHTML = `
     <button class="modal-close" onclick="closeModal('paymentModal')">✕</button>
-    <h2 class="modal-title" style="font-size:18px">确认支付</h2>
+    <h2 class="modal-title" style="font-size:18px">确认兑换</h2>
     <p class="modal-tagline">${p.name} · ${p.price.toLocaleString()} 万DAC</p>
     <div class="payment-steps">
       <div class="payment-step active">
         <div class="step-dot">1</div>
-        <span>支付 ${p.price.toLocaleString()} 万DAC 到商家钱包</span>
+        <span>兑换 ${p.price.toLocaleString()} 万DAC 到商家钱包</span>
       </div>
       <div class="payment-step">
         <div class="step-dot">2</div>
@@ -352,12 +352,12 @@ function showPaymentModal(productId) {
       </div>
       <div class="payment-step">
         <div class="step-dot">3</div>
-        <span>支付成功，获得${p.name}权益</span>
+        <span>兑换成功，获得${p.name}权益</span>
       </div>
     </div>
     <div style="background:var(--bg-surface);border-radius:var(--radius-sm);padding:16px;margin:16px 0;font-size:13px;color:var(--text-secondary)">
       <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <span>支付方</span><span style="color:var(--text-primary)">${shortAddr || '未连接'}</span>
+        <span>兑换方</span><span style="color:var(--text-primary)">${shortAddr || '未连接'}</span>
       </div>
       <div style="display:flex;justify-content:space-between;margin-bottom:8px">
         <span>收款方</span><span style="color:var(--text-primary)">${storeConfig.store.wallet.slice(0,4)}...${storeConfig.store.wallet.slice(-4)}</span>
@@ -371,7 +371,7 @@ function showPaymentModal(productId) {
     </div>
     <div id="paymentStatus" style="text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:16px"></div>
     <button class="btn-buy gold" id="btnConfirmPay" onclick="executePayment('${p.id}')">
-      <span>🔐</span> 确认并支付 ${p.price.toLocaleString()} 万DAC
+      <span>🔐</span> 确认并兑换 ${p.price.toLocaleString()} 万DAC
     </button>
   `;
   document.getElementById('paymentModal').classList.add('active');
@@ -479,29 +479,29 @@ function generateAiResponse(question) {
   const text = question.toLowerCase();
   const productNames = storeConfig.products.map(p => p.name.toLowerCase());
 
-  if (text.includes('支付') || text.includes('购买') || text.includes('结算')) {
-    return '本商城支持 DAC 支付，请先通过顶部按钮连接 TP 钱包，然后在商品详情页点击“DAC支付购买”进行支付。支付完成后，链上交易会在 Solscan 上显示。';
+  if (text.includes('兑换') || text.includes('购买') || text.includes('结算')) {
+    return '本商城支持 DAC 兑换，请先通过顶部按钮连接钱包，然后在商品详情页点击"DAC兑换购买"进行兑换。兑换完成后，链上交易会在 Solscan 上显示。';
   }
   if (text.includes('配送') || text.includes('物流') || text.includes('发货')) {
     return '实物商品支持全国包邮配送。付款成功后，客服会与您联系确认收货地址，预计 3-7 个工作日发货。';
   }
-  if (text.includes('钱包') || text.includes('tp')) {
-    return '请使用 TP 钱包浏览器打开本页面，点击“连接钱包”即可授权登录并支付 DAC。';
+  if (text.includes('钱包') || text.includes('tp') || text.includes('okx')) {
+    return '请使用 TP 钱包或 OKX Web3 钱包浏览器打开本页面，点击"连接钱包"即可授权登录并兑换 DAC。';
   }
   if (text.includes('退货') || text.includes('售后') || text.includes('退款')) {
-    return '本商城售后政策请联系客服处理。对于未付款订单可直接取消，已支付订单请联系客服确认退款流程。';
+    return '本商城售后政策请联系客服处理。对于未付款订单可直接取消，已兑换订单请联系客服确认退款流程。';
   }
   if (text.includes('商品') || text.includes('介绍') || text.includes('详情')) {
     const matched = storeConfig.products.find(p => text.includes(p.name.toLowerCase()) || text.includes(p.tagline.toLowerCase()));
     if (matched) {
       return `${matched.name}：${matched.description} 价格 ${matched.price.toLocaleString()} 万DAC。${matched.features.slice(0,2).join('，')}。`; 
     }
-    return '我们有传世窖池品鉴卡、尊享卡、经典窖藏、臻藏限量、窖主尊享等商品，均可使用 DAC 支付。点击页面商品即可查看详情。';
+    return '我们有传世窖池品鉴卡、尊享卡、经典窖藏、臻藏限量、窖主尊享等商品，均可使用 DAC 兑换。点击页面商品即可查看详情。';
   }
   if (text.includes('区块链') || text.includes('链上') || text.includes('solana')) {
-    return '本商城基于 Solana 链，使用 DAC 代币完成支付，订单信息上链可查。支付后可通过 Solscan 查看交易详情。';
+    return '本商城基于 Solana 链，使用 DAC 代币完成兑换，订单信息上链可查。兑换后可通过 Solscan 查看交易详情。';
   }
-  return '您好，我已收到您的问题。您可以问我“如何支付”、“如何配送”、“如何连接钱包”等问题。如果需要人工客服，请说明“人工客服”或“联系客服”。';
+  return '您好，我已收到您的问题。您可以问我"如何兑换"、"如何配送"、"如何连接钱包"等问题。如果需要人工客服，请说明"人工客服"或"联系客服"。';
 }
 
 async function getOrCreateATA(mint, owner, payer) {
@@ -597,7 +597,7 @@ async function buyProduct(productId) {
     return;
   }
 
-  // 直接显示支付弹窗
+  // 直接显示兑换弹窗
   showPaymentModal(productId);
 }
 
@@ -701,9 +701,9 @@ async function executePayment(productId) {
         if (sig) {
           statusEl.innerHTML = `
             <div style="font-size:40px;margin-bottom:12px">✅</div>
-            <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
+            <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">兑换已提交!</div>
             <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-              已支付 ${p.price.toLocaleString()} 万DAC · ${p.name}
+              已兑换 ${p.price.toLocaleString()} 万DAC · ${p.name}
             </div>
             <a class="tx-link" href="https://solscan.io/tx/${sig}" target="_blank">
               查看链上交易: ${sig.slice(0,12)}...${sig.slice(-8)}
@@ -714,9 +714,9 @@ async function executePayment(productId) {
           // 无签名但钱包未报错 → 交易已由钱包内部提交
           statusEl.innerHTML = `
             <div style="font-size:40px;margin-bottom:12px">✅</div>
-            <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
+            <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">兑换已提交!</div>
             <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-              已支付 ${p.price.toLocaleString()} 万DAC · ${p.name}
+              已兑换 ${p.price.toLocaleString()} 万DAC · ${p.name}
             </div>
             <div style="font-size:12px;color:var(--text-muted);margin-top:12px;line-height:1.8">
               交易已通过钱包提交到Solana链<br>
@@ -730,7 +730,7 @@ async function executePayment(productId) {
         statusEl.style.color = 'var(--success)';
         btn.style.display = 'none';
         updatePaymentSteps(4);
-        showToast('支付已提交! 万DAC转账处理中...', 'success');
+        showToast('兑换已提交! 万DAC转账处理中...', 'success');
         return;
       }
       
@@ -766,9 +766,9 @@ async function executePayment(productId) {
         if (sig) {
           statusEl.innerHTML = `
             <div style="font-size:40px;margin-bottom:12px">✅</div>
-            <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付已提交!</div>
+            <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">兑换已提交!</div>
             <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-              已支付 ${p.price.toLocaleString()} 万DAC · ${p.name}
+              已兑换 ${p.price.toLocaleString()} 万DAC · ${p.name}
             </div>
             <a class="tx-link" href="https://solscan.io/tx/${sig}" target="_blank">
               查看链上交易: ${sig.slice(0,12)}...${sig.slice(-8)}
@@ -778,7 +778,7 @@ async function executePayment(productId) {
           statusEl.style.color = 'var(--success)';
           btn.style.display = 'none';
           updatePaymentSteps(4);
-          showToast('支付已提交! ' + sig.slice(0,8) + '...', 'success');
+          showToast('兑换已提交! ' + sig.slice(0,8) + '...', 'success');
           return;
         }
       } catch(e) {
@@ -820,9 +820,9 @@ async function executePayment(productId) {
 
     statusEl.innerHTML = `
       <div style="font-size:40px;margin-bottom:12px">✅</div>
-      <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">支付成功!</div>
+      <div style="color:var(--success);font-weight:600;font-size:15px;margin-bottom:8px">兑换成功!</div>
       <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
-        已支付 ${p.price.toLocaleString()} 万DAC · ${p.name}
+        已兑换 ${p.price.toLocaleString()} 万DAC · ${p.name}
       </div>
       <a class="tx-link" href="https://solscan.io/tx/${sig}" target="_blank">
         查看链上交易: ${sig.slice(0,12)}...${sig.slice(-8)}
@@ -831,15 +831,15 @@ async function executePayment(productId) {
     statusEl.style.color = 'var(--success)';
     btn.style.display = 'none';
     updatePaymentSteps(4);
-    showToast('支付成功! ' + p.price.toLocaleString() + ' 万DAC 已到账', 'success');
+    showToast('兑换成功! ' + p.price.toLocaleString() + ' 万DAC 已到账', 'success');
 
   } catch(e) {
     console.error('Payment failed:', e);
-    statusEl.textContent = '支付失败: ' + (e.message || '请重试');
+    statusEl.textContent = '兑换失败: ' + (e.message || '请重试');
     statusEl.style.color = 'var(--danger)';
     btn.disabled = false;
-    btn.innerHTML = '<span>🔐</span> 重试支付';
-    showToast('支付失败: ' + (e.message || '未知错误'), 'error');
+    btn.innerHTML = '<span>🔐</span> 重试兑换';
+    showToast('兑换失败: ' + (e.message || '未知错误'), 'error');
   }
 }
 
