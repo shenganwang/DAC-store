@@ -238,10 +238,11 @@ const storeConfig = {
     tokenSymbol: "DAC",
     rpcUrls: [
       "https://api.mainnet-beta.solana.com",
-      "https://solana-mainnet.g.alchemy.com/v2/demo",
+      "https://solana-rpc.publicnode.com",
       "https://rpc.ankr.com/solana",
-      "https://mainnet.solana.rpcpool.com",
-      "https://solana-api.tttc.one"
+      "https://solana.drpc.org",
+      "https://solanatrpc.com/api",
+      "https://mainnet.helius-rpc.com/?api-key=6d8f9c0e-0a4f-4d6e-8f3a-2b1c5d7e9f0a"
     ]
   },
   products: [
@@ -615,7 +616,47 @@ async function ensureConnection() {
       console.warn('[DAC Store] RPC failed:', url, e.message);
     }
   }
+  // 最后尝试：publicnode 通常最稳
+  try {
+    const fallback = new solWeb3.Connection('https://solana-rpc.publicnode.com', 'confirmed');
+    await fallback.getBlockHeight();
+    return fallback;
+  } catch(e) {
+    console.warn('[DAC Store] All RPCs failed, will use wallet built-in connection');
+  }
   return null;
+}
+
+async function ensureBlockhash(tx) {
+  // 尝试RPC获取blockhash
+  var conn = await ensureConnection();
+  if (conn) {
+    try {
+      var bh = await conn.getLatestBlockhash('finalized');
+      tx.recentBlockhash = bh.blockhash;
+      tx.lastValidBlockHeight = bh.lastValidBlockHeight;
+      console.log('[DAC Store] blockhash set:', bh.blockhash.slice(0,12));
+      return;
+    } catch(e) {
+      console.warn('[DAC Store] getLatestBlockhash failed:', e.message);
+    }
+  }
+  // 备用：用新连接单独获取（不校验block height）
+  var backupUrls = [
+    'https://api.mainnet-beta.solana.com',
+    'https://solana-rpc.publicnode.com'
+  ];
+  for (var u of backupUrls) {
+    try {
+      var c = new solWeb3.Connection(u, 'processed');
+      var b = await c.getLatestBlockhash();
+      tx.recentBlockhash = b.blockhash;
+      console.log('[DAC Store] backup blockhash set via:', u);
+      return;
+    } catch(e) {}
+  }
+  // 实在不行报错
+  throw new Error('无法获取链上区块哈希，请检查网络连接');
 }
 
 async function executePayment(productId) {
@@ -653,13 +694,9 @@ async function executePayment(productId) {
     const tx = new solWeb3.Transaction();
     tx.feePayer = walletPublicKey;
     tx.add(createTransferInstruction(userATA, recipientATA, walletPublicKey, amount));
-    // 获取近期区块哈希（必须）
-    var bhConn = await ensureConnection();
-    if (bhConn) {
-      var bhResult = await bhConn.getLatestBlockhash();
-      tx.recentBlockhash = bhResult.blockhash;
-      tx.lastValidBlockHeight = bhResult.lastValidBlockHeight;
-    }
+    // 获取近期区块哈希（必须，否则签名失败）
+    statusEl.textContent = '正在连接Solana链...';
+    await ensureBlockhash(tx);
 
     // 判断钱包类型
     var isOkxWallet = walletProviderType.indexOf('OKX') >= 0;
