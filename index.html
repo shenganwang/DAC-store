@@ -122,8 +122,9 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .payment-step.active .step-dot{border-color:var(--gold);background:var(--gold);color:#fff;animation:pulse 1s infinite}
 
 /* ===== 管理后台样式 ===== */
-.admin-toggle{position:fixed;left:16px;bottom:16px;z-index:300;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);color:var(--text-muted);font-size:14px;cursor:pointer;opacity:0.3;transition:all 0.3s;display:flex;align-items:center;justify-content:center}
-.admin-toggle:hover{opacity:1;border-color:var(--gold);color:var(--gold)}
+.admin-toggle{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-muted);font-size:12px;cursor:pointer;transition:all 0.3s;font-family:var(--font-sans)}
+.admin-toggle:hover{border-color:var(--gold);color:var(--gold);background:rgba(212,168,67,0.08)}
+.admin-toggle .icon{font-size:15px}
 .admin-panel{position:fixed;top:0;left:0;width:100%;height:100%;z-index:400;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;flex-direction:column;padding:20px;overflow-y:auto}
 .admin-panel.open{display:flex}
 .admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
@@ -237,10 +238,9 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   <div class="product-grid" id="productGrid"></div>
 </div>
 
-<button class="admin-toggle" id="adminToggleBtn" onclick="showPasswordPrompt()" title="管理员入口">⚙</button>
-
 <footer class="footer">
   <p>DAC合约：<a href="https://solscan.io/token/GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump" target="_blank">GgrYtje...pump</a> · 兑换即确权 · 所有商品支持DAC</p>
+  <p style="margin-top:12px"><button class="admin-toggle" id="adminToggleBtn" onclick="showPasswordPrompt()"><span class="icon">⚙</span> 管理商品</button></p>
 </footer>
 
 <!-- 密码输入弹窗 -->
