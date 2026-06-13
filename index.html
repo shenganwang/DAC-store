@@ -121,12 +121,67 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .payment-step.done .step-dot{border-color:var(--success);background:var(--success);color:#fff}
 .payment-step.active .step-dot{border-color:var(--gold);background:var(--gold);color:#fff;animation:pulse 1s infinite}
 
+/* ===== 管理后台样式 ===== */
+.admin-toggle{position:fixed;left:16px;bottom:16px;z-index:300;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);color:var(--text-muted);font-size:14px;cursor:pointer;opacity:0.3;transition:all 0.3s;display:flex;align-items:center;justify-content:center}
+.admin-toggle:hover{opacity:1;border-color:var(--gold);color:var(--gold)}
+.admin-panel{position:fixed;top:0;left:0;width:100%;height:100%;z-index:400;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;flex-direction:column;padding:20px;overflow-y:auto}
+.admin-panel.open{display:flex}
+.admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.admin-title{font-size:20px;font-weight:700;color:var(--gold-light)}
+.admin-close{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text-secondary);font-size:18px;cursor:pointer}
+.admin-close:hover{color:var(--danger);border-color:var(--danger)}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px}
+.admin-table th{padding:10px 8px;text-align:left;background:var(--bg-surface);color:var(--gold-light);font-weight:600;font-size:12px;border-bottom:1px solid var(--border)}
+.admin-table td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--text-secondary);vertical-align:middle}
+.admin-table tr:hover td{background:rgba(255,255,255,0.02)}
+.admin-btn{padding:6px 14px;border-radius:8px;border:none;font-size:12px;cursor:pointer;transition:all 0.2s;font-family:var(--font-sans)}
+.admin-btn-edit{background:rgba(168,85,247,0.15);color:var(--accent)}
+.admin-btn-edit:hover{background:rgba(168,85,247,0.25)}
+.admin-btn-del{background:rgba(239,68,68,0.15);color:var(--danger)}
+.admin-btn-del:hover{background:rgba(239,68,68,0.25)}
+.admin-btn-add{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#151828;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all 0.3s;margin-bottom:20px}
+.admin-btn-add:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,168,67,0.2)}
+.admin-btn-export{background:rgba(34,197,94,0.15);color:var(--success);padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all 0.3s;margin-left:10px}
+.admin-btn-export:hover{background:rgba(34,197,94,0.25)}
+.admin-form{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;display:none;max-width:600px}
+.admin-form.open{display:block}
+.admin-form h4{color:var(--gold-light);margin-bottom:16px;font-size:16px}
+.admin-form-row{margin-bottom:14px}
+.admin-form-row label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:4px}
+.admin-form-row input,.admin-form-row textarea,.admin-form-row select{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg-deep);color:var(--text-primary);font-size:13px;outline:none;font-family:var(--font-sans)}
+.admin-form-row input:focus,.admin-form-row textarea:focus{border-color:var(--gold)}
+.admin-form-row textarea{min-height:60px;resize:vertical}
+.admin-form-row .row2{display:flex;gap:12px}
+.admin-form-row .row2 > *{flex:1}
+.admin-form-actions{display:flex;gap:10px;margin-top:16px}
+.admin-form-actions button{padding:10px 24px;border-radius:10px;border:none;font-size:13px;cursor:pointer;font-weight:600;font-family:var(--font-sans)}
+.admin-form-save{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#151828}
+.admin-form-cancel{background:rgba(255,255,255,0.05);color:var(--text-secondary)}
+.admin-form-cancel:hover{color:var(--text-primary)}
+.admin-export-area{display:none;background:var(--bg-deep);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px}
+.admin-export-area.open{display:block}
+.admin-export-area textarea{width:100%;height:300px;background:transparent;color:var(--text-primary);font-size:12px;font-family:'Courier New',monospace;border:none;outline:none;resize:vertical;white-space:pre;tab-size:2}
+.admin-empty{text-align:center;padding:40px;color:var(--text-muted);font-size:14px}
+.password-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:500;background:rgba(0,0,0,0.9);display:none;align-items:center;justify-content:center;padding:20px}
+.password-overlay.open{display:flex}
+.password-box{background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius);padding:30px;max-width:360px;width:100%;text-align:center}
+.password-box h3{color:var(--gold-light);margin-bottom:8px}
+.password-box p{font-size:13px;color:var(--text-muted);margin-bottom:20px}
+.password-box input{width:100%;padding:12px 16px;border-radius:10px;border:1px solid var(--border);background:var(--bg-deep);color:var(--text-primary);font-size:16px;text-align:center;outline:none;margin-bottom:16px}
+.password-box input:focus{border-color:var(--gold)}
+.password-box button{padding:10px 28px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#151828;font-size:14px;font-weight:600;cursor:pointer}
+.password-box .error{font-size:12px;color:var(--danger);margin-top:8px;display:none}
+.product-thumb-admin{width:36px;height:36px;border-radius:6px;object-fit:cover;border:1px solid var(--border);display:block}
+
 @media (max-width:600px){
   .hero{padding:40px 16px 30px}
   .hero-title{font-size:26px}
   .hero-stats{gap:24px}
   .product-grid{grid-template-columns:1fr}
   .physical-header{flex-direction:column;text-align:center}
+  .admin-table{font-size:11px}
+  .admin-table th,.admin-table td{padding:6px 4px}
+  .admin-btn{padding:4px 10px;font-size:11px}
 }
 
 .chat-button{position:fixed;right:24px;bottom:24px;z-index:260;background:linear-gradient(135deg,var(--gold),var(--accent));color:#151828;border:none;border-radius:999px;padding:14px 18px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 20px 50px rgba(0,0,0,0.25);backdrop-filter:blur(10px);transition:transform 0.2s ease,box-shadow 0.2s ease;}
@@ -182,9 +237,75 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   <div class="product-grid" id="productGrid"></div>
 </div>
 
+<button class="admin-toggle" id="adminToggleBtn" onclick="showPasswordPrompt()" title="管理员入口">⚙</button>
+
 <footer class="footer">
   <p>DAC合约：<a href="https://solscan.io/token/GgrYtjeD4j81FSgAMDUJgWLtwpPnDXGnF38S1nDMpump" target="_blank">GgrYtje...pump</a> · 兑换即确权 · 所有商品支持DAC</p>
 </footer>
+
+<!-- 密码输入弹窗 -->
+<div class="password-overlay" id="passwordOverlay">
+  <div class="password-box">
+    <h3>管理员验证</h3>
+    <p>请输入管理密码以进入商品管理后台</p>
+    <input type="password" id="adminPassword" placeholder="输入管理密码" onkeydown="if(event.key==='Enter') verifyPassword()" autocomplete="off">
+    <button onclick="verifyPassword()">确认</button>
+    <div class="error" id="passwordError">密码错误，请重试</div>
+  </div>
+</div>
+
+<!-- 管理后台面板 -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-header">
+    <div class="admin-title">📋 商品管理后台</div>
+    <div>
+      <button class="admin-btn admin-btn-export" onclick="exportConfig()">📄 导出代码</button>
+      <button class="admin-close" onclick="closeAdminPanel()">✕</button>
+    </div>
+  </div>
+
+  <button class="admin-btn-add" onclick="showAddForm()">＋ 添加新商品</button>
+
+  <!-- 商品表单 -->
+  <div class="admin-form" id="adminForm">
+    <h4 id="formTitle">添加商品</h4>
+    <div class="admin-form-row"><label>商品名称</label><input type="text" id="f_name" placeholder="如：传世窖池·品鉴卡"></div>
+    <div class="admin-form-row"><label>简短标语</label><input type="text" id="f_tagline" placeholder="如：入门之选，品味传世"></div>
+    <div class="admin-form-row">
+      <div class="row2">
+        <div><label>价格（万DAC）</label><input type="number" id="f_price" placeholder="300"></div>
+        <div><label>商品类型</label>
+          <select id="f_type">
+            <option value="digital">🔗 数字商品</option>
+            <option value="physical">📦 实物商品</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="admin-form-row"><label>图片路径</label><input type="text" id="f_image" placeholder="images/商品图片.png"></div>
+    <div class="admin-form-row"><label>详细描述</label><textarea id="f_description" rows="2" placeholder="商品详细介绍"></textarea></div>
+    <div class="admin-form-row"><label>卖点（每行一个）</label><textarea id="f_features" rows="3" placeholder="泸州老窖传世窖池纯粮酿造&#10;经典浓香型白酒 · 52度&#10;全国包邮配送"></textarea></div>
+    <div class="admin-form-actions">
+      <button class="admin-form-save" onclick="saveForm()">💾 保存</button>
+      <button class="admin-form-cancel" onclick="hideForm()">取消</button>
+    </div>
+  </div>
+
+  <!-- 导出代码区域 -->
+  <div class="admin-export-area" id="exportArea">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="color:var(--text-secondary);font-size:13px">将下方代码替换到 index.html 的 storeConfig.products 数组中</span>
+      <button class="admin-btn admin-btn-edit" onclick="copyExport()">📋 复制代码</button>
+    </div>
+    <textarea id="exportCode" readonly></textarea>
+  </div>
+
+  <!-- 商品列表 -->
+  <table class="admin-table" id="adminTable">
+    <thead><tr><th>图片</th><th>商品名</th><th>价格</th><th>类型</th><th>操作</th></tr></thead>
+    <tbody id="adminTableBody"></tbody>
+  </table>
+</div>
 
 <button class="chat-button" id="chatOpenBtn" onclick="toggleChat()">AI客服</button>
 <div class="chat-widget" id="chatWidget">
@@ -267,6 +388,19 @@ const storeConfig = {
    - 卖点：改 "features" 数组
    - 类型：digital=数字商品 physical=实物商品
    ──────────────────────────────────────────────────── */
+
+// 如果 localStorage 里有商品数据，优先使用（管理后台保存的）
+(function(){
+  try {
+    var saved = localStorage.getItem('dac_products');
+    if (saved) {
+      var parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        storeConfig.products = parsed;
+      }
+    }
+  } catch(e) {}
+})();
 
 let walletConnected = false;
 let walletPublicKey = null;
@@ -930,6 +1064,203 @@ if (window.solanaWeb3) {
 }
 
 initStore();
+
+// ===== 管理后台函数 =====
+let editingProductId = null;
+const ADMIN_PASSWORD = 'dac888';
+
+function showPasswordPrompt() {
+  document.getElementById('passwordOverlay').classList.add('open');
+  document.getElementById('adminPassword').value = '';
+  document.getElementById('passwordError').style.display = 'none';
+  setTimeout(function(){ document.getElementById('adminPassword').focus(); }, 100);
+}
+
+function verifyPassword() {
+  var pw = document.getElementById('adminPassword').value;
+  if (pw === ADMIN_PASSWORD) {
+    document.getElementById('passwordOverlay').classList.remove('open');
+    openAdminPanel();
+  } else {
+    document.getElementById('passwordError').style.display = 'block';
+    document.getElementById('adminPassword').value = '';
+    document.getElementById('adminPassword').focus();
+  }
+}
+
+function openAdminPanel() {
+  editingProductId = null;
+  document.getElementById('adminPanel').classList.add('open');
+  document.getElementById('adminForm').classList.remove('open');
+  document.getElementById('exportArea').classList.remove('open');
+  renderAdminTable();
+}
+
+function closeAdminPanel() {
+  document.getElementById('adminPanel').classList.remove('open');
+  hideForm();
+}
+
+function renderAdminTable() {
+  var tbody = document.getElementById('adminTableBody');
+  if (!storeConfig.products || storeConfig.products.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="admin-empty">暂无商品，点击上方"添加新商品"创建</td></tr>';
+    return;
+  }
+  tbody.innerHTML = storeConfig.products.map(function(p, i){
+    return '<tr>' +
+      '<td><img class="product-thumb-admin" src="' + p.image + '" alt="" onerror="this.style.display=\'none\'"></td>' +
+      '<td style="color:var(--text-primary);font-weight:500">' + escHtml(p.name) + '</td>' +
+      '<td style="color:var(--gold-light)">' + p.price.toLocaleString() + ' 万DAC</td>' +
+      '<td>' + (p.type==='physical'?'📦 实物':'🔗 数字') + '</td>' +
+      '<td>' +
+        '<button class="admin-btn admin-btn-edit" onclick="editProduct(\'' + p.id + '\')" style="margin-right:6px">编辑</button>' +
+        '<button class="admin-btn admin-btn-del" onclick="deleteProduct(\'' + p.id + '\')">删除</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+function escHtml(s) {
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function showAddForm() {
+  editingProductId = null;
+  document.getElementById('formTitle').textContent = '添加新商品';
+  document.getElementById('f_name').value = '';
+  document.getElementById('f_tagline').value = '';
+  document.getElementById('f_price').value = '';
+  document.getElementById('f_type').value = 'digital';
+  document.getElementById('f_image').value = '';
+  document.getElementById('f_description').value = '';
+  document.getElementById('f_features').value = '';
+  document.getElementById('adminForm').classList.add('open');
+  document.getElementById('adminForm').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function editProduct(id) {
+  var p = storeConfig.products.find(function(x){ return x.id === id; });
+  if (!p) return;
+  editingProductId = id;
+  document.getElementById('formTitle').textContent = '编辑商品：' + p.name;
+  document.getElementById('f_name').value = p.name;
+  document.getElementById('f_tagline').value = p.tagline;
+  document.getElementById('f_price').value = p.price;
+  document.getElementById('f_type').value = p.type || 'digital';
+  document.getElementById('f_image').value = p.image;
+  document.getElementById('f_description').value = p.description;
+  document.getElementById('f_features').value = (p.features || []).join('\n');
+  document.getElementById('adminForm').classList.add('open');
+  document.getElementById('adminForm').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function hideForm() {
+  document.getElementById('adminForm').classList.remove('open');
+  editingProductId = null;
+}
+
+function saveForm() {
+  var name = document.getElementById('f_name').value.trim();
+  var tagline = document.getElementById('f_tagline').value.trim();
+  var price = parseInt(document.getElementById('f_price').value) || 0;
+  var type = document.getElementById('f_type').value;
+  var image = document.getElementById('f_image').value.trim();
+  var description = document.getElementById('f_description').value.trim();
+  var featuresRaw = document.getElementById('f_features').value.trim();
+
+  if (!name) { showToast('请填写商品名称', 'error'); return; }
+  if (price <= 0) { showToast('请填写有效的价格', 'error'); return; }
+
+  var features = featuresRaw ? featuresRaw.split('\n').map(function(s){ return s.trim(); }).filter(function(s){ return s; }) : [];
+
+  if (editingProductId) {
+    // 编辑已有商品
+    var idx = storeConfig.products.findIndex(function(x){ return x.id === editingProductId; });
+    if (idx >= 0) {
+      storeConfig.products[idx] = {
+        id: editingProductId,
+        name: name,
+        tagline: tagline,
+        price: price,
+        image: image || ('images/img-product-0' + (idx+1) + '.png'),
+        description: description,
+        features: features,
+        type: type
+      };
+    }
+  } else {
+    // 添加新商品（自动生成 id）
+    var newId = 'product-' + Date.now();
+    storeConfig.products.push({
+      id: newId,
+      name: name,
+      tagline: tagline,
+      price: price,
+      image: image || 'images/img-product-01.png',
+      description: description,
+      features: features,
+      type: type
+    });
+  }
+
+  // 保存到 localStorage
+  saveProducts();
+  hideForm();
+  renderAdminTable();
+  renderProducts();  // 更新前台商品展示
+  showToast('商品已保存', 'success');
+}
+
+function deleteProduct(id) {
+  if (!confirm('确定要删除这个商品吗？')) return;
+  storeConfig.products = storeConfig.products.filter(function(p){ return p.id !== id; });
+  saveProducts();
+  renderAdminTable();
+  renderProducts();
+  showToast('商品已删除', 'success');
+}
+
+function saveProducts() {
+  try {
+    localStorage.setItem('dac_products', JSON.stringify(storeConfig.products));
+    document.getElementById('statProducts').textContent = storeConfig.products.length;
+  } catch(e) {
+    showToast('本地保存失败，请检查浏览器存储空间', 'error');
+  }
+}
+
+function exportConfig() {
+  var area = document.getElementById('exportArea');
+  var code = document.getElementById('exportCode');
+
+  // 把价格去单位（代码里价格只是数字，用 toLocaleString 显示）
+  var productsJson = JSON.stringify(storeConfig.products, null, 2);
+
+  code.value = 'products: [\n' + productsJson.slice(1, -1) + '\n]';
+
+  area.classList.add('open');
+  area.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function copyExport() {
+  var code = document.getElementById('exportCode');
+  code.select();
+  code.setSelectionRange(0, 99999);
+  try {
+    document.execCommand('copy');
+    showToast('代码已复制到剪贴板', 'success');
+  } catch(e) {
+    showToast('复制失败，请手动选择复制', 'error');
+  }
+}
+
+// 点击弹窗外部关闭
+document.getElementById('passwordOverlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
 </script>
 </body>
 </html>
