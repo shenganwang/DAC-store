@@ -1359,8 +1359,16 @@ document.getElementById('passwordOverlay').addEventListener('click', function(e)
 <script>
 function openAiTool(el) {
   var name = el.getAttribute('data-tool');
-  // 先跳转到AI总平台对应功能（后续替换为自有门户）
-  window.open('https://ai.nmgcqb.com/h5/5.html#/pages/index/index', '_blank');
+  var url = '';
+  // 自有AI功能（部署在自服务器）
+  if (name === '文案创作') {
+    url = 'http://122.51.245.91:8080/ai/write.html';
+    window.open(url, '_blank');
+    return;
+  }
+  // 其他功能：先跳转AI总平台（后续逐个替换为自有页面）
+  url = 'https://ai.nmgcqb.com/h5/5.html#/pages/index/index';
+  window.open(url, '_blank');
 }
 </script>
 </body>
