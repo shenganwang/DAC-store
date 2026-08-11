@@ -222,6 +222,24 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .ai-orb-3{animation-delay:.8s}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @media(max-width:640px){.ai-service-right{display:none}}
+
+/* ===== AI 智能服务专区 ===== */
+.ai-section{background:linear-gradient(160deg,#1a0f35 0%,#251348 60%,#1c2a4a 100%);border:1px solid rgba(168,85,247,.25);border-radius:20px;padding:32px 26px;margin-bottom:40px;position:relative;overflow:hidden}
+.ai-section::before{content:'';position:absolute;top:-120px;right:-120px;width:360px;height:360px;background:radial-gradient(circle,rgba(168,85,247,.18),transparent 70%);pointer-events:none}
+.ai-section-head{margin-bottom:24px;position:relative;z-index:1}
+.ai-section-title{display:flex;align-items:center;gap:10px;color:#fff;font-size:22px;font-weight:700;margin-bottom:8px}
+.ai-section-icon{font-size:24px}
+.ai-section-tag{background:linear-gradient(135deg,#d4a843,#f0d078);color:#1a0f35;font-size:11px;font-weight:700;padding:3px 12px;border-radius:16px;letter-spacing:.5px}
+.ai-section-desc{color:rgba(255,255,255,.6);font-size:13px;line-height:1.6}
+.ai-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;position:relative;z-index:1}
+.ai-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px 18px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.ai-item:hover{background:rgba(168,85,247,.15);border-color:rgba(168,85,247,.5);transform:translateY(-4px);box-shadow:0 10px 26px rgba(168,85,247,.25)}
+.ai-item-icon{width:60px;height:60px;margin:0 auto 12px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:30px;border:1px solid rgba(255,255,255,.15)}
+.ai-ic-1{background:linear-gradient(135deg,#3b82f6,#6366f1)}.ai-ic-2{background:linear-gradient(135deg,#ef4444,#f97316)}.ai-ic-3{background:linear-gradient(135deg,#f59e0b,#fbbf24)}.ai-ic-4{background:linear-gradient(135deg,#f97316,#ef4444)}.ai-ic-5{background:linear-gradient(135deg,#22c55e,#84cc16)}.ai-ic-6{background:linear-gradient(135deg,#111827,#374151)}.ai-ic-7{background:linear-gradient(135deg,#b45309,#d97706)}.ai-ic-8{background:linear-gradient(135deg,#8b5cf6,#a855f7)}.ai-ic-9{background:linear-gradient(135deg,#10b981,#06b6d4)}
+.ai-item-name{color:#fff;font-size:15px;font-weight:600;margin-bottom:4px}
+.ai-item-desc{color:rgba(255,255,255,.5);font-size:11px;line-height:1.5}
+.ai-item .ai-coming{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:9px;padding:2px 8px;border-radius:10px}
+
 </style>
 </head>
 <body>
@@ -250,24 +268,65 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 </section>
 
 <div class="container">
-  <div class="ai-service-card" onclick="window.open('https://ai.nmgcqb.com/h5/5.html#/pages/index/index','_blank')">
-    <div class="ai-service-left">
-      <div class="ai-service-badge">AI 智能服务</div>
-      <div class="ai-service-title">AI 创作 · 写文案 / 做图片 / 搞视频</div>
-      <div class="ai-service-desc">社区专属 AI 服务平台，文案创作、智能绘图、视频生成一站式搞定。DAC 权益会员可享专属体验。</div>
-      <div class="ai-service-btn">立即使用 →</div>
-    </div>
-    <div class="ai-service-right">
-      <div class="ai-orb ai-orb-1">✍️</div>
-      <div class="ai-orb ai-orb-2">🎨</div>
-      <div class="ai-orb ai-orb-3">🎬</div>
-    </div>
-  </div>
-</div>
-<div class="container">
   <h2 class="section-title">全部商品 · DAC兑换</h2>
   <p class="section-sub">数字权益 + 实物窖藏酒，用DAC直接兑换。点击商品查看详情并购买。</p>
   <div class="product-grid" id="productGrid"></div>
+</div>
+
+<div class="container">
+  <!-- ========== AI 智能服务专区 ========== -->
+  <div class="ai-section">
+    <div class="ai-section-head">
+      <div class="ai-section-title">
+        <span class="ai-section-icon">🤖</span>
+        <span>AI 智能服务</span>
+        <span class="ai-section-tag">DAC 权益专享</span>
+      </div>
+      <div class="ai-section-desc">社区专属 AI 服务平台 · 文案创作 · 智能绘图 · 视频生成 · 数字人 · 音乐创作</div>
+    </div>
+    <div class="ai-grid">
+      <div class="ai-item" data-tool="多维数字人" onclick="openAiTool(this)">
+        <div class="ai-item-icon ai-ic-1">🧑</div>
+        <div class="ai-item-name">多维数字人</div>
+        <div class="ai-item-desc">多场景照片生成长视频</div>
+      </div>
+      <div class="ai-item" data-tool="影动数字人" onclick="openAiTool(this)">
+        <div class="ai-item-icon ai-ic-2">🔥</div>
+        <div class="ai-item-name">影动数字人</div>
+        <div class="ai-item-desc">照片生成数字人</div>
+      </div>
+      <div class="ai-item" data-tool="绘梦图片" onclick="openAiTool(this)">
+        <div class="ai-item-icon ai-ic-3">🎨</div>
+        <div class="ai-item-name">绘梦图片</div>
+        <div class="ai-item-desc">顶级 AI 作图师</div>
+      </div>
+      <div class="ai-item" data-tool="即梦SD2.0" onclick="openAiTool(this)">
+        <div class="ai-item-icon ai-ic-4">🎬</div>
+        <div class="ai-item-name">即梦 SD2.0</div>
+        <div class="ai-item-desc">字节 AI 视频生成</div>
+      </div>
+      <div class="ai-item" data-tool="快乐马" onclick="openAiTool(this)">
+        <div class="ai-item-icon ai-ic-5">🎥</div>
+        <div class="ai-item-name">快乐马</div>
+        <div class="ai-item-desc">阿里 AI 视频生成</div>
+      </div>
+      <div class="ai-item" data-tool="音乐创作" onclick="openAiTool(this)">
+        <div class="ai-item-icon ai-ic-6">🎵</div>
+        <div class="ai-item-name">音乐创作</div>
+        <div class="ai-item-desc">AI 音乐创作旗舰</div>
+      </div>
+      <div class="ai-item" data-tool="视频换人" onclick="openAiTool(this)">
+        <div class="ai-item-icon ai-ic-7">🔄</div>
+        <div class="ai-item-name">视频换人</div>
+        <div class="ai-item-desc">一键替换视频人物</div>
+      </div>
+      <div class="ai-item" data-tool="文案创作" onclick="openAiTool(this)">
+        <div class="ai-item-icon ai-ic-8">✍️</div>
+        <div class="ai-item-name">文案创作</div>
+        <div class="ai-item-desc">轻松写出好文案</div>
+      </div>
+          </div>
+  </div>
 </div>
 
 <footer class="footer">
@@ -1295,6 +1354,14 @@ function copyExport() {
 document.getElementById('passwordOverlay').addEventListener('click', function(e) {
   if (e.target === this) this.classList.remove('open');
 });
+</script>
+
+<script>
+function openAiTool(el) {
+  var name = el.getAttribute('data-tool');
+  // 先跳转到AI总平台对应功能（后续替换为自有门户）
+  window.open('https://ai.nmgcqb.com/h5/5.html#/pages/index/index', '_blank');
+}
 </script>
 </body>
 </html>
