@@ -472,7 +472,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 
 .ai-item-icon{width:60px;height:60px;margin:0 auto 12px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:30px;border:1px solid rgba(255,255,255,.15)}
 
-.ai-ic-1{background:linear-gradient(135deg,#3b82f6,#6366f1)}.ai-ic-2{background:linear-gradient(135deg,#ef4444,#f97316)}.ai-ic-3{background:linear-gradient(135deg,#f59e0b,#fbbf24)}.ai-ic-4{background:linear-gradient(135deg,#f97316,#ef4444)}.ai-ic-5{background:linear-gradient(135deg,#22c55e,#84cc16)}.ai-ic-6{background:linear-gradient(135deg,#111827,#374151)}.ai-ic-7{background:linear-gradient(135deg,#b45309,#d97706)}.ai-ic-8{background:linear-gradient(135deg,#8b5cf6,#a855f7)}.ai-ic-9{background:linear-gradient(135deg,#10b981,#06b6d4)}
+.ai-ic-1{background:linear-gradient(135deg,#3b82f6,#6366f1)}.ai-ic-2{background:linear-gradient(135deg,#ef4444,#f97316)}.ai-ic-3{background:linear-gradient(135deg,#f59e0b,#fbbf24)}.ai-ic-4{background:linear-gradient(135deg,#f97316,#ef4444)}.ai-ic-5{background:linear-gradient(135deg,#22c55e,#84cc16)}.ai-ic-6{background:linear-gradient(135deg,#111827,#374151)}.ai-ic-7{background:linear-gradient(135deg,#b45309,#d97706)}.ai-ic-8{background:linear-gradient(135deg,#8b5cf6,#a855f7)}.ai-ic-9{background:linear-gradient(135deg,#10b981,#06b6d4)}.ai-ic-10{background:linear-gradient(135deg,#a855f7,#06b6d4)}
 
 .ai-item-name{color:#fff;font-size:15px;font-weight:600;margin-bottom:4px}
 
@@ -571,6 +571,11 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
     </div>
 
     <div class="ai-grid">
+       <div class="ai-item" data-tool="AI漫剧体验工作台" onclick="openAiTool(this)">
+         <div class="ai-item-icon ai-ic-10">🎬</div>
+         <div class="ai-item-name">AI漫剧体验工作台</div>
+         <div class="ai-item-desc">漫剧·无限画布·Agent工作流</div>
+       </div>
 
       <div class="ai-item" data-tool="多维数字人" onclick="openAiTool(this)">
 
@@ -2719,6 +2724,7 @@ document.getElementById('passwordOverlay').addEventListener('click', function(e)
 function openAiTool(el) {
 
   var name = el.getAttribute('data-tool');
+  if (name === 'AI漫剧体验工作台') { window.open('https://taojinaimanju.cn/#/login?code=257139', '_blank'); return; }
 
   var base = 'https://api.lzxjsm.cn/ai/';
 
