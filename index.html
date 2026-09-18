@@ -2096,7 +2096,6 @@ const storeConfig = {
 
 
 
-      "https://mainnet.helius-rpc.com/?api-key=6d8f9c0e-0a4f-4d6e-8f3a-2b1c5d7e9f0a"
 
 
 
@@ -4510,7 +4509,6 @@ async function executePayment(productId) {
 
 
 
-      'https://mainnet.helius-rpc.com/?api-key=c55ca920-d7b4-4b5c-8f9e-2fbb0a6c6e6e'
 
 
 
@@ -4918,7 +4916,7 @@ let editingProductId = null;
 
 
 
-const ADMIN_PASSWORD = 'dac888';
+const ADMIN_PASSWORD_HASH = '7a39319781b1f78f9f455247baaf7406574a097433c8f7e23e1ff618178d6283';
 
 
 
@@ -4954,46 +4952,21 @@ function showPasswordPrompt() {
 
 
 
-function verifyPassword() {
-
-
-
+async function verifyPassword() {
   var pw = document.getElementById('adminPassword').value;
-
-
-
-  if (pw === ADMIN_PASSWORD) {
-
-
-
+  var hex = '';
+  try {
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+    hex = Array.from(new Uint8Array(buf)).map(function(b){ return ('0' + b.toString(16)).slice(-2); }).join('');
+  } catch (e) { hex = ''; }
+  if (hex === ADMIN_PASSWORD_HASH) {
     document.getElementById('passwordOverlay').classList.remove('open');
-
-
-
     openAdminPanel();
-
-
-
   } else {
-
-
-
     document.getElementById('passwordError').style.display = 'block';
-
-
-
     document.getElementById('adminPassword').value = '';
-
-
-
     document.getElementById('adminPassword').focus();
-
-
-
   }
-
-
-
 }
 
 
